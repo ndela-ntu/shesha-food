@@ -1,9 +1,9 @@
 import IRegion from "@/models/region";
 
-export const AppData: IRegion[] = [
+export const Regions: IRegion[] = [
   {
     id: 1,
-    name: "Region 1",
+    name: "Eldorado Park",
     coordinates: {
       id: 1,
       name: "Region 1 Center",
@@ -130,7 +130,7 @@ export const AppData: IRegion[] = [
   },
   {
     id: 1,
-    name: "Region 2",
+    name: "Freedom Park",
     coordinates: {
       id: 2,
       name: "Region 2 Center",
