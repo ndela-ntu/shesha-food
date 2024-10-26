@@ -1,31 +1,27 @@
 import Divider from "@/components/divider";
 import { SearchInput } from "@/components/search-input";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { AppData } from "@/mock-data/app-data";
-import { LocateFixed } from "lucide-react";
-import Image from "next/image";
+import { LocateFixed, MoveRight, ShoppingBag } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="px-1 flex flex-col md:flex-row items-center w-full space-y-2.5">
-      <div className="flex flex-col space-y-2.5 w-full">
-        <SearchInput
-          className="border-champagne border text-champagne w-full"
-          placeholder="Search for food..."
-        />
-        <div className="w-full flex justify-center">
-          <Button className="bg-celadon">
-            <LocateFixed />
-            Stores Near Me?
-          </Button>
+    <div className="flex flex-col items-center justify-center">
+      <Link
+        className="flex max-w-fit items-center bg-celadon p-2.5 rounded-xl"
+        href="/shop"
+      >
+        <div className="flex flex-col space-y-2.5">
+          <div className="flex  space-x-2.5">
+            <span className="text-lg font-bold">Shop</span>
+            <ShoppingBag />
+          </div>
+          <p className="text-sm">Shopping on the app requires your location</p>
         </div>
-      </div>
-      <Divider />
-      <div>
-        <h1 className="text-lg">Popular In Your Area</h1>
-        <div className=""></div>
-      </div>
+        <div className="rounded-full bg-coralPink p-1.5">
+          <MoveRight />
+        </div>
+      </Link>
     </div>
   );
 }

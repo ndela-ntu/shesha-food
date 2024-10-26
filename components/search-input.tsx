@@ -30,10 +30,3 @@ SearchInput.displayName = "SearchInput"
 
 export { SearchInput }
 
-export default function Component() {
-  return (
-    <div className="p-4 max-w-sm mx-auto">
-      <SearchInput placeholder="Search..." />
-    </div>
-  )
-}
