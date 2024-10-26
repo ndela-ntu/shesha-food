@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
     <nav className={`p-2.5 ${montserrat.className} bg-celadon text-champagne`}>
       <div className="flex justify-between items-center">
         <Link href="/" className="text-2xl lg:text-4xl italic font-black">
-          SHESHA.FOOD
+          SHESHA.APP
         </Link>
 
         {/* Desktop Menu */}
