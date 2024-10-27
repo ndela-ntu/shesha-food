@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
 import Navbar from "@/components/navbar";
+import { LocationProvider } from "@/context/location-context";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,14 +21,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${montserrat.className}`}
-      >
-        <header className="w-full sticky top-0 z-20">
-          <Navbar />
-        </header>
-        <main className="h-screen text-champagne w-full z-10 bg-gradient-to-br from-asparagus to-olivine py-2.5 px-1.5">{children}</main>
-      </body>
+      <LocationProvider>
+        <body className={`${montserrat.className}`}>
+          <header className="w-full sticky top-0 z-20">
+            <Navbar />
+          </header>
+          <main className="h-screen text-champagne w-full z-10 bg-gradient-to-br from-asparagus to-olivine py-2.5 px-1.5">
+            {children}
+          </main>
+        </body>
+      </LocationProvider>
     </html>
   );
 }
