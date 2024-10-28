@@ -13,6 +13,7 @@ import {
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { SearchInput } from "./search-input";
+import { Map } from 'lucide-react';
 import { SearchWithGeocoding } from "./seach-with-geocoding";
 
 export default function ShopRequest() {
@@ -53,6 +54,7 @@ export default function ShopRequest() {
         </Button>
         <span>or</span>
         <Button className="bg-coralPink rounded-xl w-full">
+          <Map />
           Select from map
         </Button>
         <p className="text-xs mt-2.5">
