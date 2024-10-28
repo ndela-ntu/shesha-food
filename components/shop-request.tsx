@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocation } from "@/context/location-context";
-import { MoveRight, ShoppingBag } from "lucide-react";
+import { LocateFixed, MoveRight, ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Dialog,
@@ -12,13 +12,15 @@ import {
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { SearchInput } from "./search-input";
+import { SearchWithGeocoding } from "./seach-with-geocoding";
 
 export default function ShopRequest() {
   const router = useRouter();
   const { location, fetchLocation } = useLocation();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleDivClick = () => {
+  const handleMyLocationClick = () => {
     fetchLocation();
 
     if (!location) {
@@ -34,44 +36,29 @@ export default function ShopRequest() {
 
   return (
     <>
-      <div
-        className="flex max-w-fit items-center bg-celadon p-2.5 rounded-xl"
-        onClick={handleDivClick}
-      >
-        <div className="flex flex-col space-y-2.5">
-          <div className="flex space-x-2.5">
-            <span className="text-lg font-bold">Shop</span>
-            <ShoppingBag />
-          </div>
-          <p className="text-sm">
-            Please note that shopping on the app requires your location.
-          </p>
+      <div className="flex flex-col items-center bg-celadon p-2.5 rounded-xl space-y-2.5">
+        <div className="w-full">
+          <SearchWithGeocoding
+            className="border border-champagne rounded-xl"
+            placeholder="Search delivery location..."
+          />
         </div>
-        <div className="rounded-full bg-coralPink p-1.5">
-          <MoveRight />
-        </div>
+        <span>or</span>
+        <Button
+          onClick={handleMyLocationClick}
+          className="bg-coralPink rounded-xl w-full"
+        >
+          <LocateFixed />
+          Use my current location
+        </Button>
+        <span>or</span>
+        <Button className="bg-coralPink rounded-xl w-full">
+          Select from map
+        </Button>
+        <p className="text-xs mt-2.5">
+          Please note that shopping on the app requires your delivery location.
+        </p>
       </div>
-
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="rounded-xl max-w-[95%] md:max-w-full flex flex-col items-center bg-olivine text-champagne">
-          <DialogTitle className="underline">
-            Location Access Required
-          </DialogTitle>
-          <DialogDescription className="text-center">
-            To access the shop, please allow location access in your browser
-            settings. You can reset this permission if you want to be asked each
-            time.
-          </DialogDescription>
-          <DialogFooter>
-            <Button
-              className="bg-coralPink rounded-xl px-2.5 py-1 max-w-fit"
-              onClick={() => setIsDialogOpen(false)}
-            >
-              Close
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }
