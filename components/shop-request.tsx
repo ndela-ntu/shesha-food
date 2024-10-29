@@ -13,25 +13,17 @@ import {
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { SearchInput } from "./search-input";
-import { Map } from 'lucide-react';
+import { Map } from "lucide-react";
 import { SearchWithGeocoding } from "./seach-with-geocoding";
+import Divider from "./divider";
 
 export default function ShopRequest() {
   const router = useRouter();
-  const { location, fetchLocation } = useLocation();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  const handleMyLocationClick = () => {
-    fetchLocation();
-
-    if (!location) {
-      setIsDialogOpen(true);
-    }
-  };
+  const { location, fetchLocation, setLocation } = useLocation();
 
   useEffect(() => {
     if (location) {
-      router.push("/shop");
+      //router.push("/shop");
     }
   }, [location, router]);
 
@@ -42,11 +34,14 @@ export default function ShopRequest() {
           <SearchWithGeocoding
             className="border border-champagne rounded-xl"
             placeholder="Search delivery location..."
+            // coordsCB={(value) => {
+            //   setLocation({ latitude: value.lat, longitude: value.lng });
+            // }}
           />
         </div>
         <span>or</span>
         <Button
-          onClick={handleMyLocationClick}
+          onClick={fetchLocation}
           className="bg-coralPink rounded-xl w-full"
         >
           <LocateFixed />
@@ -57,8 +52,15 @@ export default function ShopRequest() {
           <Map />
           Select from map
         </Button>
+        <Divider />
+        {location && (
+          <Button className="bg-coralPink rounded-xl w-full">
+            Continue
+            <MoveRight />
+          </Button>
+        )}
         <p className="text-xs mt-2.5">
-          Please note that shopping on the app requires your delivery location.
+          Please note that shopping on the app requires a delivery location.
         </p>
       </div>
     </>

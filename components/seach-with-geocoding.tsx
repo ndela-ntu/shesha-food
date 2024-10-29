@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import Divider from "./divider";
+import axios from "axios";
 
 // Initialize Mapbox with your access token
 const geocodingClient = mbxGeocoding({
@@ -23,38 +24,42 @@ const SearchWithGeocoding = React.forwardRef<
   const [query, setQuery] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
-  const fetchSuggestions = async (input: string) => {
-    if (input) {
-      try {
-        const response = await geocodingClient
-          .forwardGeocode({
-            query: input,
+  const fetchSuggestions = React.useCallback(async (query: string) => {
+    if (!query) return setSuggestions([]);
+    try {
+      const response = await axios.get(
+        `https://api.opencagedata.com/geocode/v1/json`,
+        {
+          params: {
+            q: query,
+            key: process.env.NEXT_PUBLIC_OPENCAGE_API_KEY,
             limit: 5,
-          })
-          .send();
-
-        const suggestionList = response.body.features.map(
-          (feature: { place_name: string }) => feature.place_name
-        );
-        setSuggestions(suggestionList);
-      } catch (error) {
-        console.error("Error fetching suggestions:", error);
-        setSuggestions([]);
-      }
-    } else {
-      setSuggestions([]);
+          },
+        }
+      );
+      const results = response.data.results.map(
+        (result: any) => result.formatted
+      );
+      setSuggestions(results);
+    } catch (error) {
+      console.error("Error fetching location suggestions:", error);
     }
-  };
+  }, []);
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      if (query) fetchSuggestions(query);
+    }, 500); // Adjust debounce delay as needed (500ms in this case)
+
+    return () => clearTimeout(handler);
+  }, [query, fetchSuggestions]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setQuery(inputValue);
-    fetchSuggestions(inputValue);
+    setQuery(e.target.value);
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    setQuery(suggestion);
-    setSuggestions([]); // Clear suggestions after selection
+  const handleSuggestionClick = (value: string) => {
+    setSuggestions([]);
   };
 
   return (
@@ -79,13 +84,11 @@ const SearchWithGeocoding = React.forwardRef<
                 >
                   {suggestion}
                 </li>
-                <Divider thickness="1" />
               </div>
             ))}
           </ul>
         )}
       </div>
-      <SendHorizontal className="w-10 h-10 bg-coralPink rounded-full p-2.5" />
     </div>
   );
 });
