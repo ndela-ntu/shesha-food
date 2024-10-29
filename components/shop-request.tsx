@@ -2,28 +2,44 @@
 
 import { useLocation } from "@/context/location-context";
 import { LocateFixed, MoveRight, ShoppingBag } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 
-import { SearchWithGeocoding } from "./seach-with-geocoding";
+import { SearchWithGeocoding } from "./search-with-geocoding";
 import Divider from "./divider";
-import DeliveryLocationPicker from "./delivery-location-picker";
+import axios from "axios";
+import { Map } from "lucide-react";
 
 export default function ShopRequest() {
   const router = useRouter();
   const { location, fetchLocation, setLocation, clearLocation } = useLocation();
+  const [locationName, setLocationName] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     clearLocation();
   }, []);
 
   useEffect(() => {
-    if (location) {
-      console.log(location);
-      //router.push("/shop");
-    }
+    const reverseGeocode = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${location?.latitude}&lon=${location?.longitude}`
+        );
+
+        const data = await response.json();
+        setLocationName(data.name);
+      } catch (error) {
+        console.error("Error fetching location data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    reverseGeocode();
   }, [location]);
 
   return (
@@ -36,7 +52,7 @@ export default function ShopRequest() {
             onSelectCoordinates={(coordinates) =>
               setLocation({
                 latitude: coordinates.lat,
-                longitude: coordinates.lng,
+                longitude: coordinates.lon,
               })
             }
           />
@@ -50,20 +66,22 @@ export default function ShopRequest() {
           Use my current location
         </Button>
         <span>or</span>
-        <DeliveryLocationPicker
-          onLocationSelect={(coordinates) =>
-            setLocation({
-              latitude: coordinates.lat,
-              longitude: coordinates.lng,
-            })
-          }
-        />
+        <Button className="bg-coralPink rounded-xl w-full">
+          <Map />
+          Select From Map
+        </Button>
         <Divider />
         {location && (
-          <Button className="bg-coralPink rounded-xl w-full">
-            Continue
-            <MoveRight />
-          </Button>
+          <div className="flex flex-col w-full space-y-2.5">
+            <span className="text-sm">
+              <span>Selected location: </span>
+              <span className="font-bold underline">{locationName}</span>
+            </span>
+            <Button className="bg-coralPink rounded-xl w-full">
+              Continue
+              <MoveRight />
+            </Button>
+          </div>
         )}
         <p className="text-xs mt-2.5">
           Please note that shopping on the app requires a delivery location.
