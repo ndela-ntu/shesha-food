@@ -13,16 +13,21 @@ import axios from "axios";
 const geocodingClient = mbxGeocoding({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!,
 });
+interface Suggestion {
+  name: string;
+  coordinates: { lat: number; lng: number };
+}
 
 interface SearchWithGeocodingProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
-
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  onSelectCoordinates: (coordinates: { lat: number; lng: number }) => void;
+}
 const SearchWithGeocoding = React.forwardRef<
   HTMLInputElement,
   SearchWithGeocodingProps
->(({ className, ...props }, ref) => {
-  const [query, setQuery] = useState<string>("");
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+>(({ className, onSelectCoordinates, ...props }, ref) => {
+  const [suggestions, setSuggestions] = React.useState<Suggestion[]>([]);
+  const [query, setQuery] = React.useState("");
 
   const fetchSuggestions = React.useCallback(async (query: string) => {
     if (!query) return setSuggestions([]);
@@ -37,9 +42,13 @@ const SearchWithGeocoding = React.forwardRef<
           },
         }
       );
-      const results = response.data.results.map(
-        (result: any) => result.formatted
-      );
+      const results = response.data.results.map((result: any) => ({
+        name: result.formatted,
+        coordinates: {
+          lat: result.geometry.lat,
+          lng: result.geometry.lng,
+        },
+      }));
       setSuggestions(results);
     } catch (error) {
       console.error("Error fetching location suggestions:", error);
@@ -58,9 +67,7 @@ const SearchWithGeocoding = React.forwardRef<
     setQuery(e.target.value);
   };
 
-  const handleSuggestionClick = (value: string) => {
-    setSuggestions([]);
-  };
+  const handleSuggestionClick = (value: string) => {};
 
   return (
     <div className="flex items-center space-x-2">
@@ -79,10 +86,17 @@ const SearchWithGeocoding = React.forwardRef<
             {suggestions.map((suggestion, index) => (
               <div key={index}>
                 <li
-                  onClick={() => handleSuggestionClick(suggestion)}
+                  onClick={() => {
+                    if (ref && typeof ref !== "function") {
+                      ref.current!.value = suggestion.name;
+                    }
+                    setSuggestions([]);
+                    setQuery(suggestion.name)
+                    onSelectCoordinates(suggestion.coordinates); // Call the callback with coordinates
+                  }}
                   className="px-4 py-2 cursor-pointer text-sm"
                 >
-                  {suggestion}
+                  {suggestion.name}
                 </li>
               </div>
             ))}

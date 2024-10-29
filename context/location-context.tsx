@@ -17,6 +17,7 @@ interface LocationContextType {
   location: Location;
   fetchLocation: () => void;
   setLocation: (newLocation: Location) => void;
+  clearLocation: () => void
 }
 
 const LocationContext = createContext<LocationContextType | undefined>(
@@ -58,6 +59,13 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({
     }
   };
 
+  const clearLocation = () => {
+    setLocationState(null)
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('userLocation')
+    }
+  }
+
   const fetchLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -79,7 +87,7 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({
   };
 
   return (
-    <LocationContext.Provider value={{ location, fetchLocation, setLocation }}>
+    <LocationContext.Provider value={{ location, fetchLocation, setLocation, clearLocation }}>
       {children}
     </LocationContext.Provider>
   );

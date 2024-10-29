@@ -3,29 +3,28 @@
 import { useLocation } from "@/context/location-context";
 import { LocateFixed, MoveRight, ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "./ui/dialog";
+
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
-import { SearchInput } from "./search-input";
-import { Map } from "lucide-react";
+
 import { SearchWithGeocoding } from "./seach-with-geocoding";
 import Divider from "./divider";
+import DeliveryLocationPicker from "./delivery-location-picker";
 
 export default function ShopRequest() {
   const router = useRouter();
-  const { location, fetchLocation, setLocation } = useLocation();
+  const { location, fetchLocation, setLocation, clearLocation } = useLocation();
+
+  useEffect(() => {
+    clearLocation();
+  }, []);
 
   useEffect(() => {
     if (location) {
+      console.log(location);
       //router.push("/shop");
     }
-  }, [location, router]);
+  }, [location]);
 
   return (
     <>
@@ -34,9 +33,12 @@ export default function ShopRequest() {
           <SearchWithGeocoding
             className="border border-champagne rounded-xl"
             placeholder="Search delivery location..."
-            // coordsCB={(value) => {
-            //   setLocation({ latitude: value.lat, longitude: value.lng });
-            // }}
+            onSelectCoordinates={(coordinates) =>
+              setLocation({
+                latitude: coordinates.lat,
+                longitude: coordinates.lng,
+              })
+            }
           />
         </div>
         <span>or</span>
@@ -48,10 +50,14 @@ export default function ShopRequest() {
           Use my current location
         </Button>
         <span>or</span>
-        <Button className="bg-coralPink rounded-xl w-full">
-          <Map />
-          Select from map
-        </Button>
+        <DeliveryLocationPicker
+          onLocationSelect={(coordinates) =>
+            setLocation({
+              latitude: coordinates.lat,
+              longitude: coordinates.lng,
+            })
+          }
+        />
         <Divider />
         {location && (
           <Button className="bg-coralPink rounded-xl w-full">
