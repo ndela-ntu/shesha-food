@@ -97,7 +97,7 @@ const SearchWithGeocoding = React.forwardRef<
           {...props}
         />
         {suggestions.length > 0 && (
-          <ul className="absolute z-10 w-full bg-olivine mt-1 rounded-xl shadow-lg">
+          <ul className="absolute z-20 w-full bg-olivine mt-1 rounded-xl shadow-lg">
             {suggestions.map((suggestion, index) => (
               <li
                 key={index}
