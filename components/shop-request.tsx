@@ -9,18 +9,7 @@ import { useRouter } from "next/navigation";
 
 import { SearchWithGeocoding } from "./search-with-geocoding";
 
-import MapWrapper, { MapMarker } from "./map-wrapper";
-
-const customMarkers: MapMarker[] = [
-  {
-    position: [51.515, -0.09],
-    popup: "Custom Location 1",
-  },
-  {
-    position: [51.505, -0.08],
-    popup: "Custom Location 2",
-  },
-];
+import MapWrapper from "./map-wrapper";
 
 export default function ShopRequest() {
   const router = useRouter();
@@ -86,11 +75,7 @@ export default function ShopRequest() {
             <Pin size={16} />
             <span>Pick from map</span>
           </span>
-          <MapWrapper
-            center={[51.505, -0.09]}
-            zoom={14}
-            markers={customMarkers}
-          />
+          <MapWrapper onLocationSelect={(value) => {}} />
         </div>
       </div>
       {location && (

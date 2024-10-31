@@ -1,31 +1,23 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { MapMarker, MapProps } from './map-wrapper';
+import { MapProps } from './map-wrapper';
 
 // Default values
-const DEFAULT_CENTER: [number, number] = [51.505, -0.09];
+const DEFAULT_CENTER: [number, number] = [-26.26781, 27.85849];
 const DEFAULT_ZOOM = 13;
-const DEFAULT_MARKERS: MapMarker[] = [
-  {
-    position: [51.505, -0.09],
-    popup: "London City Center"
-  },
-  {
-    position: [51.51, -0.1],
-    popup: "Another London Location"
-  }
-];
 
 export const LeafletMap: React.FC<MapProps> = ({
   center = DEFAULT_CENTER,
   zoom = DEFAULT_ZOOM,
-  markers = DEFAULT_MARKERS
+  onLocationSelect,
+  allowMultipleMarkers = false,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
+  const markersRef = useRef<L.Marker[]>([]);
 
   useEffect(() => {
     // Ensure we're in a browser environment
@@ -35,9 +27,9 @@ export const LeafletMap: React.FC<MapProps> = ({
     if (typeof L !== 'undefined') {
       delete (L.Icon.Default.prototype as any)._getIconUrl;
       L.Icon.Default.mergeOptions({
-        iconUrl: '/leaflet/marker-icon.png',
-        iconRetinaUrl: '/leaflet/marker-icon-2x.png',
-        shadowUrl: '/leaflet/marker-shadow.png',
+        iconRetinaUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+        iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+        shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
       });
     }
 
@@ -49,33 +41,46 @@ export const LeafletMap: React.FC<MapProps> = ({
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(mapInstanceRef.current);
-    }
 
-    // Clear existing markers and add new ones
-    if (mapInstanceRef.current) {
-      // Remove existing markers
-      mapInstanceRef.current.eachLayer((layer) => {
-        if (layer instanceof L.Marker) {
-          mapInstanceRef.current?.removeLayer(layer);
+      // Add click handler for placing markers
+      mapInstanceRef.current.on('click', (e: L.LeafletMouseEvent) => {
+        const coordinates: [number, number] = [e.latlng.lat, e.latlng.lng];
+        
+        // Clear existing markers if multiple markers are not allowed
+        if (!allowMultipleMarkers) {
+          markersRef.current.forEach(marker => {
+            marker.remove();
+          });
+          markersRef.current = [];
         }
-      });
 
-      // Add new markers
-      markers.forEach(marker => {
-        L.marker(marker.position)
-          .bindPopup(marker.popup)
+        // Create and add new marker
+        const marker = L.marker(coordinates)
           .addTo(mapInstanceRef.current!);
+
+        // Add popup with coordinates
+        marker.bindPopup(`Latitude: ${coordinates[0].toFixed(6)}<br>Longitude: ${coordinates[1].toFixed(6)}`)
+          .openPopup();
+
+        // Store marker reference
+        markersRef.current.push(marker);
+
+        // Call the callback with the coordinates
+        if (onLocationSelect) {
+          onLocationSelect(coordinates);
+        }
       });
     }
 
     // Cleanup function
     return () => {
+      markersRef.current.forEach(marker => marker.remove());
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
       }
     };
-  }, [center, zoom, markers]);
+  }, [center, zoom, onLocationSelect, allowMultipleMarkers]);
 
   return (
     <div 

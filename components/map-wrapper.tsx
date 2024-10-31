@@ -2,18 +2,12 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-
-// Type definitions
-export interface MapMarker {
-  position: [number, number];
-  popup: string;
-}
 
 export interface MapProps {
   center?: [number, number];
   zoom?: number;
-  markers?: MapMarker[];
+  onLocationSelect?: (coordinates: [number, number]) => void;
+  allowMultipleMarkers?: boolean;
 }
 
 // Dynamically import Leaflet to prevent SSR issues
