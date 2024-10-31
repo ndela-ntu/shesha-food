@@ -8,8 +8,7 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 
 import { SearchWithGeocoding } from "./search-with-geocoding";
-import Map, { MapMarker } from "./map";
-import MapWithNoSSR from "./map";
+import MapWrapper, { MapMarker } from "./map-wrapper";
 
 const customMarkers: MapMarker[] = [
   {
@@ -86,7 +85,7 @@ export default function ShopRequest() {
             <Pin />
             <span>Pick from map</span>
           </span>
-          <MapWithNoSSR
+          <MapWrapper
             center={[51.505, -0.09]}
             zoom={14}
             markers={customMarkers}
