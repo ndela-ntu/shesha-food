@@ -80,7 +80,7 @@ export const LeafletMap: React.FC<MapProps> = ({
   return (
     <div 
       ref={mapRef} 
-      className="h-96 w-full" 
+      className="h-96 w-full z-10" 
       aria-label="Interactive Map"
     />
   );

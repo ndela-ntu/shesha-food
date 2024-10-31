@@ -31,7 +31,7 @@ const DynamicMap = dynamic(
 
 const MapWrapper: React.FC<MapProps> = (props) => {
   return (
-    <div>
+    <div className="z-10">
       <DynamicMap {...props} />
     </div>
   );
