@@ -20,13 +20,16 @@ const SearchWithGeocoding = React.forwardRef<
   HTMLInputElement,
   SearchWithGeocodingProps
 >(({ className, onSelectCoordinates, ...props }, ref) => {
-  const [query, setQuery] = React.useState<string>("");
+  const [query, setQuery] = React.useState<{
+    query: string;
+    withFetch: boolean;
+  }>({ query: "", withFetch: false });
   const [suggestions, setSuggestions] = React.useState<Suggestion[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [isSuggestionsVisible, setIsSuggestionsVisible] =
     React.useState<boolean>(true);
 
-    const wrapperRef = React.useRef<HTMLDivElement>(null);
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
 
   const fetchLocations = async (query: string) => {
     setLoading(true);
@@ -52,23 +55,28 @@ const SearchWithGeocoding = React.forwardRef<
   }, 300);
 
   React.useEffect(() => {
-    handleSearch(query);
+    if (query.withFetch) {
+      handleSearch(query.query);
+    }
   }, [query]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    setQuery({ query: event.target.value, withFetch: true });
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+    if (
+      wrapperRef.current &&
+      !wrapperRef.current.contains(event.target as Node)
+    ) {
       setIsSuggestionsVisible(false); // Close the suggestions list
     }
   };
 
   React.useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -84,7 +92,7 @@ const SearchWithGeocoding = React.forwardRef<
           type="search"
           className={cn("pl-8", className)}
           ref={ref}
-          value={query}
+          value={query.query}
           onChange={handleInputChange}
           {...props}
         />
@@ -94,7 +102,10 @@ const SearchWithGeocoding = React.forwardRef<
               <li
                 key={index}
                 onClick={() => {
-                  setQuery(suggestion.display_name);
+                  setQuery({
+                    query: suggestion.display_name,
+                    withFetch: false,
+                  });
                   setSuggestions([]);
                   onSelectCoordinates({
                     lat: parseFloat(suggestion.lat),
