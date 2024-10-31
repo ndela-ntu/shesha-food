@@ -5,9 +5,15 @@ import dynamic from "next/dynamic";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 // Type definitions
+export interface MapMarker {
+  position: [number, number];
+  popup: string;
+}
+
 export interface MapProps {
   center?: [number, number];
   zoom?: number;
+  markers?: MapMarker[];
 }
 
 // Dynamically import Leaflet to prevent SSR issues
@@ -25,7 +31,7 @@ const DynamicMap = dynamic(
 
 const MapWrapper: React.FC<MapProps> = (props) => {
   return (
-    <div className="w-full z-0">
+    <div>
       <DynamicMap {...props} />
     </div>
   );

@@ -8,7 +8,19 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 
 import { SearchWithGeocoding } from "./search-with-geocoding";
-import MapWrapper from "./map-wrapper";
+
+import MapWrapper, { MapMarker } from "./map-wrapper";
+
+const customMarkers: MapMarker[] = [
+  {
+    position: [51.515, -0.09],
+    popup: "Custom Location 1",
+  },
+  {
+    position: [51.505, -0.08],
+    popup: "Custom Location 2",
+  },
+];
 
 export default function ShopRequest() {
   const router = useRouter();
@@ -74,15 +86,17 @@ export default function ShopRequest() {
             <Pin size={16} />
             <span>Pick from map</span>
           </span>
-          <MapWrapper />
+          <MapWrapper
+            center={[51.505, -0.09]}
+            zoom={14}
+            markers={customMarkers}
+          />
         </div>
       </div>
       {location && (
-        <div className="z-10 bg-coralPink rounded-xl fixed bottom-0 left-0 w-full flex flex-col items-center">
-          <span className="font-bold underline text-champagne">
-            {locationName}
-          </span>
-          <Button className="m-0 bg-olivine rounded-xl">
+        <div className="z-20 bg-coralPink fixed bottom-0 left-0 w-full flex items-center justify-between">
+          <span className="pl-2.5 text-champagne">{locationName}</span>
+          <Button className="m-0 bg-olivine">
             Continue
             <MoveRight />
           </Button>
