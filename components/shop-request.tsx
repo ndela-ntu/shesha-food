@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocation } from "@/context/location-context";
-import { LocateFixed, MoveRight, ShoppingBag } from "lucide-react";
+import { LocateFixed, MoveRight, Pin, ShoppingBag } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "./ui/button";
@@ -14,12 +14,12 @@ import MapWithNoSSR from "./map";
 const customMarkers: MapMarker[] = [
   {
     position: [51.515, -0.09],
-    popup: "Custom Location 1"
+    popup: "Custom Location 1",
   },
   {
     position: [51.505, -0.08],
-    popup: "Custom Location 2"
-  }
+    popup: "Custom Location 2",
+  },
 ];
 
 export default function ShopRequest() {
@@ -81,15 +81,21 @@ export default function ShopRequest() {
           Use my current location
         </Button>
         <span>or</span>
-        <MapWithNoSSR
-          center={[51.505, -0.09]}
-          zoom={14}
-          markers={customMarkers}
-        />
+        <div className="w-full">
+          <span className="w-full py-1.5 flex items-center justify-center bg-coralPink space-x-2.5 rounded-t-xl">
+            <Pin />
+            <span>Pick from map</span>
+          </span>
+          <MapWithNoSSR
+            center={[51.505, -0.09]}
+            zoom={14}
+            markers={customMarkers}
+          />
+        </div>
         {location && (
-          <div className="flex flex-col w-full space-y-2.5">
+          <div className="fixed bottom-5 left-0 w-full flex flex-col space-y-2.5">
             <span className="text-sm font-bold underline">{locationName}</span>
-            <Button className="bg-coralPink rounded-xl w-full">
+            <Button className="bg-coralPink rounded-full w-full">
               Continue
               <MoveRight />
             </Button>

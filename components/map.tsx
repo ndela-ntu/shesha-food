@@ -104,11 +104,8 @@ const Map: React.FC<MapProps> = ({
   }
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Interactive Map</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Card className="w-full p-1 m-0">
+      <CardContent className="p-1 m-0">
         <div
           ref={mapRef}
           className="h-96 w-full relative"
