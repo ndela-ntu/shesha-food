@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import { MapMarker, MapProps } from "./map-wrapper";
+import React, { useEffect, useRef } from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { MapMarker, MapProps } from './map-wrapper';
 
 // Default values
 const DEFAULT_CENTER: [number, number] = [51.505, -0.09];
@@ -11,35 +11,33 @@ const DEFAULT_ZOOM = 13;
 const DEFAULT_MARKERS: MapMarker[] = [
   {
     position: [51.505, -0.09],
-    popup: "London City Center",
+    popup: "London City Center"
   },
   {
     position: [51.51, -0.1],
-    popup: "Another London Location",
-  },
+    popup: "Another London Location"
+  }
 ];
 
 export const LeafletMap: React.FC<MapProps> = ({
   center = DEFAULT_CENTER,
   zoom = DEFAULT_ZOOM,
-  markers = DEFAULT_MARKERS,
+  markers = DEFAULT_MARKERS
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
 
   useEffect(() => {
     // Ensure we're in a browser environment
-    if (typeof window === "undefined" || !mapRef.current) return;
+    if (typeof window === 'undefined' || !mapRef.current) return;
 
     // Fix Leaflet icon issue
-    if (typeof L !== "undefined") {
+    if (typeof L !== 'undefined') {
       delete (L.Icon.Default.prototype as any)._getIconUrl;
       L.Icon.Default.mergeOptions({
-        iconRetinaUrl:
-          "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
-        iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-        shadowUrl:
-          "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+        iconUrl: '/leaflet/marker-icon.png',
+        iconRetinaUrl: '/leaflet/marker-icon-2x.png',
+        shadowUrl: '/leaflet/marker-shadow.png',
       });
     }
 
@@ -48,9 +46,8 @@ export const LeafletMap: React.FC<MapProps> = ({
       mapInstanceRef.current = L.map(mapRef.current).setView(center, zoom);
 
       // Add tile layer
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(mapInstanceRef.current);
     }
 
@@ -64,7 +61,7 @@ export const LeafletMap: React.FC<MapProps> = ({
       });
 
       // Add new markers
-      markers.forEach((marker) => {
+      markers.forEach(marker => {
         L.marker(marker.position)
           .bindPopup(marker.popup)
           .addTo(mapInstanceRef.current!);
@@ -81,6 +78,10 @@ export const LeafletMap: React.FC<MapProps> = ({
   }, [center, zoom, markers]);
 
   return (
-    <div ref={mapRef} className="h-96 w-full" aria-label="Interactive Map" />
+    <div 
+      ref={mapRef} 
+      className="h-96 w-full" 
+      aria-label="Interactive Map"
+    />
   );
 };
