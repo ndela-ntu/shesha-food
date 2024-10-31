@@ -101,6 +101,7 @@ const SearchWithGeocoding = React.forwardRef<
             {suggestions.map((suggestion, index) => (
               <li
                 key={index}
+
                 onClick={() => {
                   setQuery({
                     query: suggestion.display_name,
@@ -112,7 +113,7 @@ const SearchWithGeocoding = React.forwardRef<
                     lon: parseFloat(suggestion.lon),
                   });
                 }}
-                className="px-4 py-2 cursor-pointer text-sm"
+                className="z-10 px-4 py-2 cursor-pointer text-sm"
               >
                 {suggestion.display_name}
               </li>

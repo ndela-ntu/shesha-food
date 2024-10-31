@@ -1,44 +1,33 @@
-'use client';
+"use client";
 
-import React from 'react';
-import dynamic from 'next/dynamic';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import React from "react";
+import dynamic from "next/dynamic";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 // Type definitions
-export interface MapMarker {
-  position: [number, number];
-  popup: string;
-}
-
 export interface MapProps {
   center?: [number, number];
   zoom?: number;
-  markers?: MapMarker[];
 }
 
 // Dynamically import Leaflet to prevent SSR issues
 const DynamicMap = dynamic(
-  () => import('./map').then((mod) => mod.LeafletMap),
-  { 
+  () => import("./map").then((mod) => mod.LeafletMap),
+  {
     ssr: false,
     loading: () => (
       <div className="h-96 w-full flex items-center justify-center">
         <p>Loading map...</p>
       </div>
-    )
+    ),
   }
 );
 
 const MapWrapper: React.FC<MapProps> = (props) => {
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Interactive Map</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <DynamicMap {...props} />
-      </CardContent>
-    </Card>
+    <div className="w-full z-0">
+      <DynamicMap {...props} />
+    </div>
   );
 };
 

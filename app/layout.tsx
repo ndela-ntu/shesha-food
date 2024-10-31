@@ -26,7 +26,7 @@ export default function RootLayout({
           <header className="w-full sticky top-0 z-20">
             <Navbar />
           </header>
-          <main className="h-screen text-champagne w-full z-10 bg-gradient-to-br from-asparagus to-olivine py-2.5 px-1.5">
+          <main className="h-full text-champagne w-full z-10 bg-gradient-to-br from-asparagus to-olivine py-2.5 px-1.5">
             {children}
           </main>
         </body>

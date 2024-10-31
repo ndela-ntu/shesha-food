@@ -1,28 +1,17 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import { MapProps, MapMarker } from './map-wrapper';
+import { MapProps } from './map-wrapper';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 // Default values
-const DEFAULT_CENTER: [number, number] = [51.505, -0.09];
-const DEFAULT_ZOOM = 13;
-const DEFAULT_MARKERS: MapMarker[] = [
-  {
-    position: [51.505, -0.09],
-    popup: "London City Center"
-  },
-  {
-    position: [51.51, -0.1],
-    popup: "Another London Location"
-  }
-];
+const DEFAULT_CENTER: [number, number] = [-26.26781, 27.85849];
+const DEFAULT_ZOOM = 10;
 
 export const LeafletMap: React.FC<MapProps> = ({
   center = DEFAULT_CENTER,
   zoom = DEFAULT_ZOOM,
-  markers = DEFAULT_MARKERS
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -60,12 +49,7 @@ export const LeafletMap: React.FC<MapProps> = ({
         }
       });
 
-      // Add new markers
-      markers.forEach(marker => {
-        L.marker(marker.position)
-          .bindPopup(marker.popup)
-          .addTo(mapInstanceRef.current!);
-      });
+      
     }
 
     // Cleanup function
@@ -75,12 +59,12 @@ export const LeafletMap: React.FC<MapProps> = ({
         mapInstanceRef.current = null;
       }
     };
-  }, [center, zoom, markers]);
+  }, [center, zoom]);
 
   return (
     <div 
       ref={mapRef} 
-      className="h-96 w-full" 
+      className="h-96 w-full z-0" 
       aria-label="Interactive Map"
     />
   );

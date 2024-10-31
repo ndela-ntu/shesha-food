@@ -8,18 +8,7 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 
 import { SearchWithGeocoding } from "./search-with-geocoding";
-import MapWrapper, { MapMarker } from "./map-wrapper";
-
-const customMarkers: MapMarker[] = [
-  {
-    position: [51.515, -0.09],
-    popup: "Custom Location 1",
-  },
-  {
-    position: [51.505, -0.08],
-    popup: "Custom Location 2",
-  },
-];
+import MapWrapper from "./map-wrapper";
 
 export default function ShopRequest() {
   const router = useRouter();
@@ -55,7 +44,7 @@ export default function ShopRequest() {
 
   return (
     <>
-      <div className="flex flex-col items-center bg-celadon p-2.5 rounded-xl space-y-2.5">
+      <div className="flex flex-col items-center bg-celadon px-2.5 pt-2.5 pb-20 rounded-xl space-y-2.5">
         <p className="text-xs mt-2.5">
           Please note that shopping on the app requires a delivery location.
         </p>
@@ -82,25 +71,23 @@ export default function ShopRequest() {
         <span>or</span>
         <div className="w-full">
           <span className="w-full py-1.5 flex items-center justify-center bg-coralPink space-x-2.5 rounded-t-xl">
-            <Pin />
+            <Pin size={16} />
             <span>Pick from map</span>
           </span>
-          <MapWrapper
-            center={[51.505, -0.09]}
-            zoom={14}
-            markers={customMarkers}
-          />
+          <MapWrapper />
         </div>
-        {location && (
-          <div className="fixed bottom-5 left-0 w-full flex flex-col space-y-2.5">
-            <span className="text-sm font-bold underline">{locationName}</span>
-            <Button className="bg-coralPink rounded-full w-full">
-              Continue
-              <MoveRight />
-            </Button>
-          </div>
-        )}
       </div>
+      {location && (
+        <div className="z-10 bg-coralPink rounded-xl fixed bottom-0 left-0 w-full flex flex-col items-center">
+          <span className="font-bold underline text-champagne">
+            {locationName}
+          </span>
+          <Button className="m-0 bg-olivine rounded-xl">
+            Continue
+            <MoveRight />
+          </Button>
+        </div>
+      )}
     </>
   );
 }
