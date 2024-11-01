@@ -8,9 +8,11 @@ import Divider from "../divider";
 import Image from "next/image";
 import DefaultAvatar from "./default-avatar";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function ShopScreen() {
   const { location } = useLocation();
+  
 
   const region = findNearbyRegion(
     { lat: location?.latitude || 0, lng: location?.longitude || 0 },

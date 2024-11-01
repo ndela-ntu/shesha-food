@@ -78,7 +78,7 @@ export default function ShopRequest() {
           </span>
           <div className="flex items-center space-x-2.5 bg-coralPink py-1.5 px-1.5">
             <div className="border-2 border-sky-300 h-4 w-4 rounded-full bg-sky-200" />
-            <span>- Supported locations</span>
+            <span>- Supported Regions</span>
           </div>
           <MapWrapper
             onLocationSelect={(coordinates) => {
