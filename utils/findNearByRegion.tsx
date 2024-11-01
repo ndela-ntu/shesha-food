@@ -31,7 +31,7 @@ export const findNearbyRegion = (
     for (const region of regions) {
       const distance = calculateDistance(userLocation, region.coordinates)
       
-      if (distance <= 1 && (closestRegion === null || distance < shortestDistance)) {
+      if (distance <= 2 && (closestRegion === null || distance < shortestDistance)) {
         closestRegion = region
         shortestDistance = distance
       }
