@@ -3,7 +3,7 @@ import IRegion from "@/models/region";
 export const Regions: IRegion[] = [
   {
     id: 1,
-    name: "Eldorado Park 1",
+    name: "Freedom Park",
     coordinates: {
       id: 1,
       name: "Region 1 Center",
@@ -130,7 +130,7 @@ export const Regions: IRegion[] = [
   },
   {
     id: 1,
-    name: "Freedom Park",
+    name: "Eldorado Park",
     coordinates: {
       id: 2,
       name: "Region 2 Center",

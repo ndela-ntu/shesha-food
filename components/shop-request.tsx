@@ -76,7 +76,12 @@ export default function ShopRequest() {
             <Pin size={16} />
             <span>Pick from map</span>
           </span>
+          <div className="flex items-center space-x-2.5 bg-coralPink py-1.5 px-1.5">
+            <div className="border-2 border-sky-300 h-4 w-4 rounded-full bg-sky-200" />
+            <span>- Supported locations</span>
+          </div>
           <MapWrapper
+            center={[-26.295647, 27.922997]}
             onLocationSelect={(coordinates) => {
               setLocation({
                 latitude: coordinates[0],
@@ -91,7 +96,10 @@ export default function ShopRequest() {
           <span className="pl-2.5 text-champagne">
             {loading ? "Loading..." : locationName}
           </span>
-          <Link href="/shop" className="bg-champagne text-celadon px-2.5 py-1 flex space-x-2.5">
+          <Link
+            href="/shop"
+            className="bg-champagne text-celadon px-2.5 py-1 flex space-x-2.5"
+          >
             <span>Continue</span>
             <MoveRight />
           </Link>
