@@ -45,7 +45,7 @@ export default function ShopRequest() {
 
   return (
     <>
-      <div className="flex flex-col items-center bg-celadon px-2.5 pt-2.5 pb-20 rounded-xl space-y-2.5">
+      <div className="flex flex-col items-center bg-celadon px-2.5 pt-2.5 pb-16 rounded-xl space-y-2.5">
         <p className="text-xs mt-2.5">
           Please note that shopping on the app requires a delivery location.
         </p>
@@ -75,13 +75,20 @@ export default function ShopRequest() {
             <Pin size={16} />
             <span>Pick from map</span>
           </span>
-          <MapWrapper onLocationSelect={(value) => {}} />
+          <MapWrapper
+            onLocationSelect={(coordinates) => {
+              setLocation({
+                latitude: coordinates[0],
+                longitude: coordinates[1],
+              });
+            }}
+          />
         </div>
       </div>
       {location && (
         <div className="z-20 bg-coralPink fixed bottom-0 left-0 w-full flex items-center justify-between">
-          <span className="pl-2.5 text-champagne">{locationName}</span>
-          <Button className="m-0 bg-olivine">
+          <span className="pl-2.5 text-champagne">{loading ? 'Loading...' : locationName}</span>
+          <Button className="m-0 bg-champagne text-celadon">
             Continue
             <MoveRight />
           </Button>

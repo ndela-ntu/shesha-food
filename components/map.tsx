@@ -1,9 +1,15 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { MapProps } from './map-wrapper';
+
+interface MapProps {
+  center?: [number, number];
+  zoom?: number;
+  onLocationSelect?: (coordinates: [number, number]) => void;
+  allowMultipleMarkers?: boolean;
+}
 
 // Default values
 const DEFAULT_CENTER: [number, number] = [-26.26781, 27.85849];
@@ -18,7 +24,37 @@ export const LeafletMap: React.FC<MapProps> = ({
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersRef = useRef<L.Marker[]>([]);
+  
+  // Memoize the click handler to prevent unnecessary rerenders
+  const handleMapClick = useCallback((e: L.LeafletMouseEvent) => {
+    const coordinates: [number, number] = [e.latlng.lat, e.latlng.lng];
+    
+    // Clear existing markers if multiple markers are not allowed
+    if (!allowMultipleMarkers) {
+      markersRef.current.forEach(marker => {
+        marker.remove();
+      });
+      markersRef.current = [];
+    }
 
+    // Create and add new marker
+    const marker = L.marker(coordinates)
+      .addTo(mapInstanceRef.current!);
+
+    // Add popup with coordinates
+    marker.bindPopup(`Latitude: ${coordinates[0].toFixed(6)}<br>Longitude: ${coordinates[1].toFixed(6)}`)
+      .openPopup();
+
+    // Store marker reference
+    markersRef.current.push(marker);
+
+    // Call the callback with the coordinates
+    if (onLocationSelect) {
+      onLocationSelect(coordinates);
+    }
+  }, [allowMultipleMarkers, onLocationSelect]);
+
+  // Setup map
   useEffect(() => {
     // Ensure we're in a browser environment
     if (typeof window === 'undefined' || !mapRef.current) return;
@@ -42,45 +78,25 @@ export const LeafletMap: React.FC<MapProps> = ({
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(mapInstanceRef.current);
 
-      // Add click handler for placing markers
-      mapInstanceRef.current.on('click', (e: L.LeafletMouseEvent) => {
-        const coordinates: [number, number] = [e.latlng.lat, e.latlng.lng];
-        
-        // Clear existing markers if multiple markers are not allowed
-        if (!allowMultipleMarkers) {
-          markersRef.current.forEach(marker => {
-            marker.remove();
-          });
-          markersRef.current = [];
-        }
+      // Add click handler
+      mapInstanceRef.current.on('click', handleMapClick);
+    }
 
-        // Create and add new marker
-        const marker = L.marker(coordinates)
-          .addTo(mapInstanceRef.current!);
-
-        // Add popup with coordinates
-        marker.bindPopup(`Latitude: ${coordinates[0].toFixed(6)}<br>Longitude: ${coordinates[1].toFixed(6)}`)
-          .openPopup();
-
-        // Store marker reference
-        markersRef.current.push(marker);
-
-        // Call the callback with the coordinates
-        if (onLocationSelect) {
-          onLocationSelect(coordinates);
-        }
-      });
+    // Update view if center or zoom changes
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.setView(center, zoom);
     }
 
     // Cleanup function
     return () => {
-      markersRef.current.forEach(marker => marker.remove());
       if (mapInstanceRef.current) {
+        mapInstanceRef.current.off('click', handleMapClick);
+        markersRef.current.forEach(marker => marker.remove());
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
       }
     };
-  }, [center, zoom, onLocationSelect, allowMultipleMarkers]);
+  }, [center, zoom]); // Remove handleMapClick from dependencies to prevent rerender
 
   return (
     <div 
