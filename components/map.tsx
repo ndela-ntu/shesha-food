@@ -45,6 +45,9 @@ export const LeafletMap: React.FC<MapProps> = ({
     marker.bindPopup(`Latitude: ${coordinates[0].toFixed(6)}<br>Longitude: ${coordinates[1].toFixed(6)}`)
       .openPopup();
 
+    //Fly to coordinates
+    mapInstanceRef.current?.flyTo(e.latlng)
+
     // Store marker reference
     markersRef.current.push(marker);
 
