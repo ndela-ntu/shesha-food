@@ -22,7 +22,7 @@ export default function ShopScreen() {
   }
 
   return (
-    <div className="text-champagne w-full">
+    <div className="text-champagne w-full h-screen">
       <div className="w-full">
         <SearchInput
           className="border-champagne border text-champagne w-full"
