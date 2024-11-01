@@ -12,7 +12,7 @@ interface MapProps {
 }
 
 // Default values
-const DEFAULT_CENTER: [number, number] = [-26.26781, 27.85849];
+const DEFAULT_CENTER: [number, number] = [-26.295647, 27.922997];
 const DEFAULT_ZOOM = 13;
 
 export const LeafletMap: React.FC<MapProps> = ({

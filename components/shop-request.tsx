@@ -81,7 +81,6 @@ export default function ShopRequest() {
             <span>- Supported locations</span>
           </div>
           <MapWrapper
-            center={[-26.295647, 27.922997]}
             onLocationSelect={(coordinates) => {
               setLocation({
                 latitude: coordinates[0],
