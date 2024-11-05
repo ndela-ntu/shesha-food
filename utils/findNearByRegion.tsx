@@ -26,7 +26,7 @@ export const findNearbyRegion = (
   regions: IRegion[]
 ): IRegion | null => {
     let closestRegion: IRegion | null = null
-    let shortestDistance = 1 // Initialize with the max distance of 1 km
+    let shortestDistance = 2 // Initialize with the max distance of 1 km
   
     for (const region of regions) {
       const distance = calculateDistance(userLocation, region.coordinates)

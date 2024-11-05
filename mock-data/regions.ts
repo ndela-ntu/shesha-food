@@ -1,3 +1,4 @@
+import { ITEMSCATEGORY } from "@/models/items-category";
 import IRegion from "@/models/region";
 
 export const Regions: IRegion[] = [
@@ -18,26 +19,26 @@ export const Regions: IRegion[] = [
         description: "Mphoza serves ikota ranging from R15 to R80",
         tags: ["Kota", "Bunny Chow"],
         location: { id: 1, name: "Mphoza", lat: -26.295634, lng: 27.93444 },
-        menu: [
-          {
-            item: {
+        menu: {
+          items: [
+            {
               name: "Number 1",
               description: "This is a kota worth R15. Number 1 on the list",
               price: 15,
               imageUrl: "/kota.jpg",
-              includes: ["Chips", "Burgers", "Vienna"],
+              category: ITEMSCATEGORY.KOTA,
+              ingredients: ["Vienna", "Polony"],
             },
-          },
-          {
-            item: {
+            {
               name: "Number 2",
               description: "This is a kota worth R18. Number 1 on the list",
               price: 18,
               imageUrl: "/kota.jpg",
-              includes: ["Chips", "Burgers", "Vienna", "French"],
+              category: ITEMSCATEGORY.KOTA,
+              ingredients: ["Vienna", "Polony"],
             },
-          },
-        ],
+          ],
+        },
         extras: [
           { name: "Buddy Coke", price: 18, imageUrl: undefined },
           { name: "Extra Cheese", price: 2, imageUrl: undefined },
@@ -79,26 +80,26 @@ export const Regions: IRegion[] = [
         description: "John serves ikota ranging from R15 to R80",
         tags: ["Kota", "Bunny Chow"],
         location: { id: 2, name: "John", lat: -26.295269, lng: 27.932051 },
-        menu: [
-          {
-            item: {
+        menu: {
+          items: [
+            {
               name: "Number 1",
               description: "This is a kota worth R15. Number 1 on the list",
               price: 15,
               imageUrl: "/kota.jpg",
-              includes: ["Chips", "Burgers", "Vienna"],
+              category: ITEMSCATEGORY.KOTA,
+              ingredients: ["Vienna", "Polony"],
             },
-          },
-          {
-            item: {
+            {
               name: "Number 2",
-              description: "This is a kota worth R20. Number 2 on the list",
-              price: 20,
+              description: "This is a kota worth R18. Number 1 on the list",
+              price: 18,
               imageUrl: "/kota.jpg",
-              includes: ["Chips", "Burgers", "Vienna", "French"],
+              category: ITEMSCATEGORY.KOTA,
+              ingredients: ["Vienna", "Polony"],
             },
-          },
-        ],
+          ],
+        },
         extras: undefined,
         ratings: {
           ratings: [
@@ -119,11 +120,10 @@ export const Regions: IRegion[] = [
         },
       },
     ],
-    vehicles: [
+    drivers: [
       {
         id: 1,
-        registration: "X545",
-        idleAt: { id: 1, name: "X545 Idle", lat: -26.293151, lng: 27.934056 },
+        position: { id: 1, lat: 0, lng: 0, name: "Freedom Park" },
         owner: { name: "Lindelani" },
       },
     ],
@@ -145,26 +145,26 @@ export const Regions: IRegion[] = [
         description: "Joe serves serves Indian cuisine ranging from R15 to R80",
         tags: ["Samoosas", "Curry"],
         location: { id: 3, name: "Joe", lat: -26.29619, lng: 27.920145 },
-        menu: [
-          {
-            item: {
-              name: "Samoosas",
-              description: "Samoosas with some curry",
-              price: 3,
+        menu: {
+          items: [
+            {
+              name: "Number 1",
+              description: "This is a kota worth R15. Number 1 on the list",
+              price: 15,
               imageUrl: "/kota.jpg",
-              includes: ["Curry"],
+              category: ITEMSCATEGORY.KOTA,
+              ingredients: ["Vienna", "Polony"],
             },
-          },
-          {
-            item: {
-              name: "Briyani",
-              description: "Briyani with roasted chicken",
+            {
+              name: "Number 2",
+              description: "This is a kota worth R18. Number 1 on the list",
               price: 18,
               imageUrl: "/kota.jpg",
-              includes: ["Chicken", "Rice", "Potatoes"],
+              category: ITEMSCATEGORY.KOTA,
+              ingredients: ["Vienna", "Polony"],
             },
-          },
-        ],
+          ],
+        },
         extras: undefined,
         ratings: {
           ratings: [
@@ -196,19 +196,26 @@ export const Regions: IRegion[] = [
           },
         },
       },
-      
     ],
-    vehicles: [
+    drivers: [
       {
         id: 1,
-        registration: "X545",
-        idleAt: { id: 1, name: "X545 Location", lat: -26.293151, lng: 27.934056 },
+        position: {
+          id: 1,
+          name: "X545 Location",
+          lat: -26.293151,
+          lng: 27.934056,
+        },
         owner: { name: "Lindelani" },
       },
       {
         id: 1,
-        registration: "Y276",
-        idleAt: { id: 1, name: "Y276 Location", lat: -26.293151, lng: 27.934056 },
+        position: {
+          id: 1,
+          name: "Y276 Location",
+          lat: -26.293151,
+          lng: 27.934056,
+        },
         owner: { name: "Lindelani" },
       },
     ],

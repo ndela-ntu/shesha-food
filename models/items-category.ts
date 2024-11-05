@@ -1,0 +1,8 @@
+export enum ITEMSCATEGORY {
+  KOTA,
+  ATCHAAR,
+  FATCAKES,
+  DAGWOOD,
+  SCONES,
+  MUFFINS,
+}

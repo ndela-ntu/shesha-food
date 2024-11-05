@@ -1,8 +1,7 @@
 import ICoordinates from "./coordinates";
 
-export default interface IVehicle {
+export default interface IDriver {
   id: number;
-  registration: string;
-  idleAt: ICoordinates;
+  position: ICoordinates;
   owner: { name: string };
 }

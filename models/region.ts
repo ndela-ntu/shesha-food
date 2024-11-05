@@ -1,5 +1,5 @@
 import ICoordinates from "./coordinates";
-import IVehicle from "./vehicle";
+import IDriver from "./drivers";
 import { IStore } from "./store";
 
 export default interface IRegion {
@@ -7,5 +7,5 @@ export default interface IRegion {
   name: string;
   coordinates: ICoordinates;
   stores: IStore[]
-  vehicles: IVehicle[];
+  drivers: IDriver[];
 }

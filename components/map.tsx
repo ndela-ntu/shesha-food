@@ -3,13 +3,7 @@
 import React, { useEffect, useRef, useCallback } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-
-interface MapProps {
-  center?: [number, number];
-  zoom?: number;
-  onLocationSelect?: (coordinates: [number, number]) => void;
-  allowMultipleMarkers?: boolean;
-}
+import { MapProps } from "./map-wrapper";
 
 // Default values
 const DEFAULT_CENTER: [number, number] = [-26.295647, 27.922997];
@@ -20,6 +14,7 @@ export const LeafletMap: React.FC<MapProps> = ({
   zoom = DEFAULT_ZOOM,
   onLocationSelect,
   allowMultipleMarkers = false,
+  regions,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -85,21 +80,14 @@ export const LeafletMap: React.FC<MapProps> = ({
     if (!mapInstanceRef.current) {
       mapInstanceRef.current = L.map(mapRef.current).setView(center, zoom);
 
-      const circle1 = L.circle([-26.291952, 27.936952], {
-        color: "skyblue",
-        fillColor: "skyblue",
-        fillOpacity: 0.5,
-        radius: 2000,
-      }).addTo(mapInstanceRef.current);
-
-      const circle2 = L.circle([-26.291905,27.911338,], 
-        {
+      regions.forEach((region) => {
+        L.circle([region.coordinates.lat, region.coordinates.lng], {
           color: "skyblue",
           fillColor: "skyblue",
           fillOpacity: 0.5,
           radius: 2000,
-        }
-      ).addTo(mapInstanceRef.current);
+        }).addTo(mapInstanceRef.current!);
+      });
 
       // Add tile layer
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {

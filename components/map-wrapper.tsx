@@ -2,12 +2,14 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
+import IRegion from "@/models/region";
 
 export interface MapProps {
   center?: [number, number];
   zoom?: number;
   onLocationSelect?: (coordinates: [number, number]) => void;
   allowMultipleMarkers?: boolean;
+  regions: IRegion[],
 }
 
 // Dynamically import Leaflet to prevent SSR issues

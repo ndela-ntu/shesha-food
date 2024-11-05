@@ -11,6 +11,7 @@ import { SearchWithGeocoding } from "./search-with-geocoding";
 
 import MapWrapper from "./map-wrapper";
 import Link from "next/link";
+import { Regions } from "@/mock-data/regions";
 
 export default function ShopRequest() {
   const router = useRouter();
@@ -81,6 +82,7 @@ export default function ShopRequest() {
             <span>- Supported Regions</span>
           </div>
           <MapWrapper
+            regions={Regions}
             onLocationSelect={(coordinates) => {
               setLocation({
                 latitude: coordinates[0],
