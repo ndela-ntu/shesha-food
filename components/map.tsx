@@ -15,6 +15,7 @@ export const LeafletMap: React.FC<MapProps> = ({
   onLocationSelect,
   allowMultipleMarkers = false,
   regions,
+  flyTo,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -80,6 +81,26 @@ export const LeafletMap: React.FC<MapProps> = ({
     if (!mapInstanceRef.current) {
       mapInstanceRef.current = L.map(mapRef.current).setView(center, zoom);
 
+      if (flyTo?.[0] !== undefined && flyTo?.[1] !== undefined) {
+        const latlng = L.latLng(
+          flyTo?.[0] ?? center[0],
+          flyTo?.[1] ?? center[1]
+        );
+
+        mapInstanceRef.current?.flyTo(L.latLng(latlng), 10);
+
+        // Create and add new marker
+        const marker = L.marker(latlng).addTo(mapInstanceRef.current!);
+        // Add popup with coordinates
+        marker
+          .bindPopup(
+            `Latitude: ${latlng.lat.toFixed(
+              6
+            )}<br>Longitude: ${latlng.lng.toFixed(6)}`
+          )
+          .openPopup();
+      }
+
       regions.forEach((region) => {
         L.circle([region.coordinates.lat, region.coordinates.lng], {
           color: "skyblue",
@@ -113,7 +134,7 @@ export const LeafletMap: React.FC<MapProps> = ({
         mapInstanceRef.current = null;
       }
     };
-  }, [center, zoom]); // Remove handleMapClick from dependencies to prevent rerender
+  }, [center, zoom, flyTo]); // Remove handleMapClick from dependencies to prevent rerender
 
   return (
     <div

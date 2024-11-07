@@ -3,8 +3,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "../ui/carousel";
 
 export default function CategoryCarousel() {
@@ -13,8 +11,8 @@ export default function CategoryCarousel() {
   );
 
   return (
-    <Carousel opts={{ align: "start" }} className="w-full ">
-      <CarouselContent className="-ml-1 mt-2">
+    <Carousel opts={{ align: "center" }} className="w-full">
+      <CarouselContent className="-ml-1">
         {categories.map((category, i) => (
           <CarouselItem
             key={i}

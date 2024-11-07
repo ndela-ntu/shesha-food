@@ -3,7 +3,6 @@
 import { useLocation } from "@/context/location-context";
 import { Regions } from "@/mock-data/regions";
 import { SearchInput } from "../search-input";
-import Divider from "../divider";
 import Image from "next/image";
 import DefaultAvatar from "./default-avatar";
 import Link from "next/link";
@@ -15,7 +14,7 @@ import reverseGeocode from "@/utils/reverseGeocode";
 import { IStore } from "@/models/store";
 import IRegion from "@/models/region";
 import { MapPin } from "lucide-react";
-import PopularItemCard from "./popular-item-card";
+import PopularItemsCarousel from "./popular-items-carousel";
 
 export const getStoreLocationsNames = async (stores: IStore[]) => {
   const results: { id: number; locationName: string }[] = [];
@@ -106,13 +105,13 @@ export default function ShopScreen() {
   }, [region]);
 
   if (!region) {
-    return <div>This app is not supported in your region</div>;
+    return <div className="h-min-screen">This app is not supported in your region</div>;
   }
 
   return (
     <div className="w-full pb-5">
       <LocationPickerSheet currentLocation={locationName} />
-      <div className="text-champagne w-full min-h-screen px-1 flex flex-col space-y-2">
+      <div className="text-champagne w-full min-h-screen px-1 flex flex-col space-y-4">
         <div className="w-full">
           <SearchInput
             className="border-champagne border text-champagne w-full"
@@ -124,11 +123,7 @@ export default function ShopScreen() {
           <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
             Popular foods around {region.name}
           </h1>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
-            {region.popularItems.map((popularItem) => (
-              <PopularItemCard key={popularItem.id} popularItem={popularItem} />
-            ))}
-          </div>
+          <PopularItemsCarousel popularItems={region.popularItems} />
         </div>
         <div className="border border-champagne p-1.5">
           <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">

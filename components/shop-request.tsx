@@ -12,12 +12,23 @@ import { SearchWithGeocoding } from "./search-with-geocoding";
 import MapWrapper from "./map-wrapper";
 import Link from "next/link";
 import { Regions } from "@/mock-data/regions";
+import { findNearbyRegion } from "@/utils/findNearByRegion";
+import IRegion from "@/models/region";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
 
 export default function ShopRequest() {
   const router = useRouter();
   const { location, fetchLocation, setLocation, clearLocation } = useLocation();
   const [locationName, setLocationName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [region, setRegion] = useState<IRegion | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   useEffect(() => {
     clearLocation();
@@ -43,7 +54,21 @@ export default function ShopRequest() {
     };
 
     reverseGeocode();
+    const region = findNearbyRegion(
+      { lat: location?.latitude || 0, lng: location?.longitude || 0 },
+      Regions
+    );
+
+    setRegion(region);
   }, [location]);
+
+  const handleSubmitClick = () => {
+    if (region) {
+      router.push("/shop");
+    } else {
+      setIsDialogOpen(true);
+    }
+  };
 
   return (
     <>
@@ -83,6 +108,7 @@ export default function ShopRequest() {
           </div>
           <MapWrapper
             regions={Regions}
+            flyTo={[location?.latitude, location?.longitude]}
             onLocationSelect={(coordinates) => {
               setLocation({
                 latitude: coordinates[0],
@@ -97,15 +123,24 @@ export default function ShopRequest() {
           <span className="pl-2.5 text-champagne">
             {loading ? "Loading..." : locationName}
           </span>
-          <Link
-            href="/shop"
+          <Button
+            onClick={handleSubmitClick}
             className="bg-champagne text-celadon px-2.5 py-1 flex space-x-2.5"
           >
             <span>Continue</span>
             <MoveRight />
-          </Link>
+          </Button>
         </div>
       )}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="bg-celadon text-champagne">
+          <DialogTitle>Region not supported</DialogTitle>
+          <DialogDescription>
+            Oh no! Your region is not supported. Please use the blue circles on
+            the map for guidance on supported regions.
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
