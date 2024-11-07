@@ -13,6 +13,7 @@ import CategoryCarousel from "./category-carousel";
 import { findNearbyRegion } from "@/utils/findNearByRegion";
 import reverseGeocode from "@/utils/reverseGeocode";
 import { IStore } from "@/models/store";
+import IRegion from "@/models/region";
 
 export const getStoreLocationsNames = async (stores: IStore[]) => {
   const results: { id: number; locationName: string }[] = [];
@@ -27,10 +28,10 @@ export const getStoreLocationsNames = async (stores: IStore[]) => {
       });
 
       if (data) {
-        results.push({ id: store.id, locationName: data.name });
+        results.push({ id: store.id, locationName: data });
+      } else {
+        results.push({ id: store.id, locationName: "" });
       }
-
-      results.push({ id: store.id, locationName: "" });
     } catch (error) {
       console.error("Error fetching the location names", error);
     }
@@ -49,32 +50,22 @@ export default function ShopScreen() {
       locationName: string;
     }[]
   >([]);
-
-  const region = findNearbyRegion(
-    { lat: location?.latitude || 0, lng: location?.longitude || 0 },
-    Regions
-  );
-
-  useEffect(() => {
-    if (region) {
-      const getLocationNames = async () => {
-        try {
-          const storeLocations = await getStoreLocationsNames(region.stores);
-          setStoreLocationNames(storeLocations);
-        } catch (error) {
-          console.error("Error fetching location names", error);
-        }
-      };
-
-      getLocationNames();
-    }
-  }, []);
+  const [region, setRegion] = useState<IRegion | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
+    const region = findNearbyRegion(
+      { lat: location?.latitude || 0, lng: location?.longitude || 0 },
+      Regions
+    );
+
+    if (region) {
+      setRegion(region);
+    }
+
     const reverseGeocode = async () => {
       if (location) {
         setLoading(true);
@@ -96,6 +87,22 @@ export default function ShopScreen() {
     reverseGeocode();
   }, [location]);
 
+  useEffect(() => {
+    if (region) {
+      const getLocationNames = async () => {
+        try {
+          const storeLocations = await getStoreLocationsNames(region.stores);
+          setStoreLocationNames(storeLocations);
+          console.log(storeLocations);
+        } catch (error) {
+          console.error("Error fetching location names", error);
+        }
+      };
+
+      getLocationNames();
+    }
+  }, [region]);
+
   if (!region) {
     return <div>This app is not supported in your region</div>;
   }
@@ -111,6 +118,9 @@ export default function ShopScreen() {
           />
         </div>
         <CategoryCarousel />
+        <Divider />
+        <h1 className="text-sm mb-2">Popular food around {region.name}</h1>
+        <div></div>
         <Divider />
         <h1 className="text-sm mb-2">Popular stores around {region.name}</h1>
         <div className="flex flex-col space-y-2.5">
@@ -132,13 +142,13 @@ export default function ShopScreen() {
                     )}
                   </Link>
                 </div>
-                <div className="flex flex-col">
-                  <span className="font-medium">{store.name}</span>
+                <div className="flex flex-col space-y-1">
+                  <span className="font-semibold">{store.name}</span>
                   <span className="text-xs md:text-sm">
                     {store.description}
                   </span>
                   {storeLocationNames[index] && (
-                    <span className="bg-champagne text-olivine rounded-xl">
+                    <span className="bg-champagne text-olivine rounded-xl px-2.5 text-xs md:text-sm max-w-fit">
                       {storeLocationNames[index].locationName}
                     </span>
                   )}
