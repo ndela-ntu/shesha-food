@@ -1,8 +1,8 @@
 import IRegion from "@/models/region";
 
 interface Location {
-    lat: number;
-    lng: number;
+  lat: number;
+  lng: number;
 }
 
 const calculateDistance = (loc1: Location, loc2: Location): number => {
@@ -25,16 +25,19 @@ export const findNearbyRegion = (
   userLocation: Location,
   regions: IRegion[]
 ): IRegion | null => {
-    let closestRegion: IRegion | null = null
-    let shortestDistance = 2 // Initialize with the max distance of 1 km
-  
-    for (const region of regions) {
-      const distance = calculateDistance(userLocation, region.coordinates)
-      
-      if (distance <= 2 && (closestRegion === null || distance < shortestDistance)) {
-        closestRegion = region
-        shortestDistance = distance
-      }
+  let closestRegion: IRegion | null = null;
+  let shortestDistance = 2; // Initialize with the max distance of 1 km
+
+  for (const region of regions) {
+    const distance = calculateDistance(userLocation, region.coordinates);
+
+    if (
+      distance <= 2 &&
+      (closestRegion === null || distance < shortestDistance)
+    ) {
+      closestRegion = region;
+      shortestDistance = distance;
     }
-    return closestRegion
+  }
+  return closestRegion;
 };

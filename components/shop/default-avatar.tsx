@@ -16,6 +16,7 @@ export default function DefaultAvatar({ name, size = 40, className = '' }: Defau
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)]
     }
+    console.log(color);
     return color
   }
 
@@ -25,11 +26,9 @@ export default function DefaultAvatar({ name, size = 40, className = '' }: Defau
 
   return (
     <div
-      className={`flex items-center justify-center text-white rounded-lg font-bold ${className}`}
+      className={`flex items-center justify-center text-champagne p-2.5 w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 rounded-full ${className}`}
       style={{
         ...gradientStyle,
-        width: '100%',
-        height: '100%',
         fontSize: `${size / 2}px`,
       }}
       aria-label={`Default avatar for ${name}`}
