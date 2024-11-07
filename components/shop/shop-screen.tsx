@@ -112,7 +112,7 @@ export default function ShopScreen() {
   return (
     <div className="w-full pb-5">
       <LocationPickerSheet currentLocation={locationName} />
-      <div className="text-champagne w-full min-h-screen px-1">
+      <div className="text-champagne w-full min-h-screen px-1 flex flex-col space-y-2">
         <div className="w-full">
           <SearchInput
             className="border-champagne border text-champagne w-full"
@@ -120,18 +120,20 @@ export default function ShopScreen() {
           />
         </div>
         <CategoryCarousel />
-        <Divider />
         <div className="border border-champagne p-1.5">
-          <h1 className="text-sm mb-2">Popular foods around {region.name}</h1>
+          <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
+            Popular foods around {region.name}
+          </h1>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
             {region.popularItems.map((popularItem) => (
               <PopularItemCard key={popularItem.id} popularItem={popularItem} />
             ))}
           </div>
         </div>
-        <Divider />
         <div className="border border-champagne p-1.5">
-          <h1 className="text-sm mb-2">Popular stores around {region.name}</h1>
+          <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
+            Popular stores around {region.name}
+          </h1>
           <div className="flex flex-col space-y-2.5">
             {region.stores.map((store, index) => (
               <div key={store.id} className="bg-coralPink rounded-xl p-1">
