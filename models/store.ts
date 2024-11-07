@@ -1,6 +1,6 @@
 import ICoordinates from "./coordinates";
 import { IRatings } from "./rating";
-import ISoldItems from "./sold-items";
+import ISoldItems from "./sold-item";
 
 export interface IStore {
   id: number;

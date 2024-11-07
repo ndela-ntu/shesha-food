@@ -1,6 +1,6 @@
 export enum ITEMSCATEGORY {
   KOTA,
-  ATCHAAR,
+  ATCHAR,
   FATCAKES,
   DAGWOOD,
   SCONES,

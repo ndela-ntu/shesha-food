@@ -11,6 +11,44 @@ export const Regions: IRegion[] = [
       lat: -26.291952,
       lng: 27.936952,
     },
+    popularItems: [
+      {
+        id: 1,
+        name: "Kota 1",
+        category: ITEMSCATEGORY.KOTA,
+        price: 18,
+        description: "Kota for only R18",
+        imageUrl: "/kota.png",
+        ingredients: ["Lettuce, Atchar, Chips"],
+      },
+      {
+        id: 2,
+        name: "Atchar",
+        category: ITEMSCATEGORY.ATCHAR,
+        price: 18,
+        description: "Atchar cup",
+        imageUrl: "/atchar.jpg",
+        ingredients: ["Mango", "Spices", "Cooking Oil"],
+      },
+      {
+        id: 3,
+        name: "Fatcakes",
+        category: ITEMSCATEGORY.FATCAKES,
+        price: 18,
+        description: "1 For R1",
+        imageUrl: "/fatcakes.jpg",
+        ingredients: ["Flour", "Cooking Oil"],
+      },
+      {
+        id: 4,
+        name: "Dagwood",
+        category: ITEMSCATEGORY.DAGWOOD,
+        price: 18,
+        description: "Dagwood",
+        imageUrl: "/dagwood.jpg",
+        ingredients: ["Lettuce, Cheese, Chips"],
+      },
+    ],
     stores: [
       {
         id: 1,
@@ -22,6 +60,7 @@ export const Regions: IRegion[] = [
         menu: {
           items: [
             {
+              id: 1,
               name: "Number 1",
               description: "This is a kota worth R15. Number 1 on the list",
               price: 15,
@@ -30,6 +69,7 @@ export const Regions: IRegion[] = [
               ingredients: ["Vienna", "Polony"],
             },
             {
+              id: 2,
               name: "Number 2",
               description: "This is a kota worth R18. Number 1 on the list",
               price: 18,
@@ -83,6 +123,7 @@ export const Regions: IRegion[] = [
         menu: {
           items: [
             {
+              id: 3,
               name: "Number 1",
               description: "This is a kota worth R15. Number 1 on the list",
               price: 15,
@@ -91,6 +132,7 @@ export const Regions: IRegion[] = [
               ingredients: ["Vienna", "Polony"],
             },
             {
+              id: 4,
               name: "Number 2",
               description: "This is a kota worth R18. Number 1 on the list",
               price: 18,
@@ -137,6 +179,17 @@ export const Regions: IRegion[] = [
       lat: -26.291905,
       lng: 27.911338,
     },
+    popularItems: [
+      {
+        id: 5,
+        name: "Kota 1",
+        category: ITEMSCATEGORY.KOTA,
+        price: 18,
+        description: "Kota for only R18",
+        imageUrl: "/kota.png",
+        ingredients: ["Lettuce, Atchar, Chips"],
+      },
+    ],
     stores: [
       {
         id: 1,
@@ -148,6 +201,7 @@ export const Regions: IRegion[] = [
         menu: {
           items: [
             {
+              id: 5,
               name: "Number 1",
               description: "This is a kota worth R15. Number 1 on the list",
               price: 15,
@@ -156,6 +210,7 @@ export const Regions: IRegion[] = [
               ingredients: ["Vienna", "Polony"],
             },
             {
+              id: 6,
               name: "Number 2",
               description: "This is a kota worth R18. Number 1 on the list",
               price: 18,

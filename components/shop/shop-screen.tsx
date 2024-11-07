@@ -14,6 +14,8 @@ import { findNearbyRegion } from "@/utils/findNearByRegion";
 import reverseGeocode from "@/utils/reverseGeocode";
 import { IStore } from "@/models/store";
 import IRegion from "@/models/region";
+import { MapPin } from "lucide-react";
+import PopularItemCard from "./popular-item-card";
 
 export const getStoreLocationsNames = async (stores: IStore[]) => {
   const results: { id: number; locationName: string }[] = [];
@@ -108,7 +110,7 @@ export default function ShopScreen() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-5">
       <LocationPickerSheet currentLocation={locationName} />
       <div className="text-champagne w-full min-h-screen px-1">
         <div className="w-full">
@@ -119,43 +121,52 @@ export default function ShopScreen() {
         </div>
         <CategoryCarousel />
         <Divider />
-        <h1 className="text-sm mb-2">Popular food around {region.name}</h1>
-        <div></div>
+        <div className="border border-champagne p-1.5">
+          <h1 className="text-sm mb-2">Popular foods around {region.name}</h1>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
+            {region.popularItems.map((popularItem) => (
+              <PopularItemCard key={popularItem.id} popularItem={popularItem} />
+            ))}
+          </div>
+        </div>
         <Divider />
-        <h1 className="text-sm mb-2">Popular stores around {region.name}</h1>
-        <div className="flex flex-col space-y-2.5">
-          {region.stores.map((store, index) => (
-            <div key={store.id} className="bg-coralPink rounded-xl p-1">
-              <div className="flex space-x-2.5 items-center">
-                <div className="relative">
-                  <Link href={`shop/${store.id}`}>
-                    {store.logoUrl ? (
-                      <Image
-                        src={store.logoUrl}
-                        alt="Logo of store"
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover"
-                      />
-                    ) : (
-                      <DefaultAvatar name={store.name} size={20} />
-                    )}
-                  </Link>
-                </div>
-                <div className="flex flex-col space-y-1">
-                  <span className="font-semibold">{store.name}</span>
-                  <span className="text-xs md:text-sm">
-                    {store.description}
-                  </span>
-                  {storeLocationNames[index] && (
-                    <span className="bg-champagne text-olivine rounded-xl px-2.5 text-xs md:text-sm max-w-fit">
-                      {storeLocationNames[index].locationName}
+        <div className="border border-champagne p-1.5">
+          <h1 className="text-sm mb-2">Popular stores around {region.name}</h1>
+          <div className="flex flex-col space-y-2.5">
+            {region.stores.map((store, index) => (
+              <div key={store.id} className="bg-coralPink rounded-xl p-1">
+                <div className="flex space-x-2.5 items-center">
+                  <div className="relative">
+                    <Link href={`shop/${store.id}`}>
+                      {store.logoUrl ? (
+                        <Image
+                          src={store.logoUrl}
+                          alt="Logo of store"
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <DefaultAvatar name={store.name} size={25} />
+                      )}
+                    </Link>
+                  </div>
+                  <div className="flex flex-col space-y-1">
+                    <span className="font-semibold">{store.name}</span>
+                    <span className="text-xs md:text-sm">
+                      {store.description}
                     </span>
-                  )}
+                    {storeLocationNames[index] && (
+                      <span className="flex items-center justify-center bg-champagne text-olivine rounded-xl px-2.5 p-1 text-xs md:text-sm max-w-fit space-x-1">
+                        <MapPin className="h-4 w-4" />
+                        <span>{storeLocationNames[index].locationName}</span>
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

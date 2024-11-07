@@ -1,6 +1,7 @@
 import { ITEMSCATEGORY } from "./items-category";
 
-export default interface ISoldItems {
+export default interface ISoldItem {
+  id: number;
   name: string;
   category: ITEMSCATEGORY;
   price: number;
