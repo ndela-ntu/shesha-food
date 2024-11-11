@@ -1,11 +1,11 @@
-interface IRating  {
+export interface IRating  {
+    id: number;
     userId: number;
     rating: number;
-    comment: string;
     timestamp: string;
+    type: 'Food' | 'Store'
 }
 
 export interface IRatings {
     ratings: IRating[];
-    averageRating: () => number;
 }

@@ -1,5 +1,11 @@
 import { ITEMSCATEGORY } from "@/models/items-category";
+import { IRating } from "@/models/rating";
 import IRegion from "@/models/region";
+
+const averageRating = (ratings: IRating[]) => {
+  const total = ratings.reduce((acc, curr) => acc + curr.rating, 0);
+  return Number((total / ratings.length).toFixed(1));
+};
 
 export const Regions: IRegion[] = [
   {
@@ -20,6 +26,17 @@ export const Regions: IRegion[] = [
         description: "Kota for only R18",
         imageUrl: "/kota.png",
         ingredients: ["Lettuce, Atchar, Chips"],
+        ratings: {
+          ratings: [
+            {
+              id: 1,
+              userId: 1,
+              rating: 4,
+              timestamp: "2024-01-01T10:00:00Z",
+              type: "Food",
+            },
+          ],
+        },
       },
       {
         id: 2,
@@ -29,6 +46,17 @@ export const Regions: IRegion[] = [
         description: "Atchar cup",
         imageUrl: "/atchar.jpg",
         ingredients: ["Mango", "Spices", "Cooking Oil"],
+        ratings: {
+          ratings: [
+            {
+              id: 2,
+              userId: 3,
+              rating: 3.6,
+              timestamp: "2024-01-01T10:00:00Z",
+              type: "Food",
+            },
+          ],
+        },
       },
       {
         id: 3,
@@ -38,6 +66,17 @@ export const Regions: IRegion[] = [
         description: "1 For R1",
         imageUrl: "/fatcakes.jpg",
         ingredients: ["Flour", "Cooking Oil"],
+        ratings: {
+          ratings: [
+            {
+              id: 1,
+              userId: 1,
+              rating: 4.5,
+              timestamp: "2024-01-01T10:00:00Z",
+              type: "Food",
+            },
+          ],
+        },
       },
       {
         id: 4,
@@ -47,6 +86,17 @@ export const Regions: IRegion[] = [
         description: "Dagwood",
         imageUrl: "/dagwood.jpg",
         ingredients: ["Lettuce, Cheese, Chips"],
+        ratings: {
+          ratings: [
+            {
+              id: 1,
+              userId: 1,
+              rating: 4.5,
+              timestamp: "2024-01-01T10:00:00Z",
+              type: "Food",
+            },
+          ],
+        },
       },
     ],
     stores: [
@@ -67,6 +117,17 @@ export const Regions: IRegion[] = [
               imageUrl: "/kota.jpg",
               category: ITEMSCATEGORY.KOTA,
               ingredients: ["Vienna", "Polony"],
+              ratings: {
+                ratings: [
+                  {
+                    id: 1,
+                    userId: 1,
+                    rating: 4.5,
+                    timestamp: "2024-01-01T10:00:00Z",
+                    type: "Food",
+                  },
+                ],
+              },
             },
             {
               id: 2,
@@ -86,31 +147,13 @@ export const Regions: IRegion[] = [
         ratings: {
           ratings: [
             {
-              userId: 1,
-              rating: 4.5,
-              comment: "Great product!",
+              id: 4,
+              userId: 5,
+              rating: 3.5,
               timestamp: "2024-01-01T10:00:00Z",
-            },
-            {
-              userId: 2,
-              rating: 3.8,
-              comment: "Good but could be better.",
-              timestamp: "2024-01-02T14:30:00Z",
-            },
-            {
-              userId: 3,
-              rating: 5.0,
-              comment: "Excellent!",
-              timestamp: "2024-01-03T08:15:00Z",
+              type: "Store",
             },
           ],
-          averageRating: function () {
-            const total = this.ratings.reduce(
-              (acc, curr) => acc + curr.rating,
-              0
-            );
-            return Number((total / this.ratings.length).toFixed(1));
-          },
         },
       },
       {
@@ -146,19 +189,13 @@ export const Regions: IRegion[] = [
         ratings: {
           ratings: [
             {
+              id: 7,
               userId: 1,
-              rating: 4.5,
-              comment: "Great product!",
+              rating: 3,
               timestamp: "2024-01-01T10:00:00Z",
+              type: "Store",
             },
           ],
-          averageRating: function () {
-            const total = this.ratings.reduce(
-              (acc, curr) => acc + curr.rating,
-              0
-            );
-            return Number((total / this.ratings.length).toFixed(1));
-          },
         },
       },
     ],
@@ -224,31 +261,27 @@ export const Regions: IRegion[] = [
         ratings: {
           ratings: [
             {
+              id: 10,
               userId: 1,
               rating: 4.5,
-              comment: "Great product!",
               timestamp: "2024-01-01T10:00:00Z",
+              type: "Store",
             },
             {
+              id: 11,
               userId: 2,
               rating: 3.8,
-              comment: "Good but could be better.",
               timestamp: "2024-01-02T14:30:00Z",
+              type: "Store",
             },
             {
+              id: 11,
               userId: 3,
               rating: 5.0,
-              comment: "Excellent!",
               timestamp: "2024-01-03T08:15:00Z",
+              type: "Store",
             },
-          ],
-          averageRating: function () {
-            const total = this.ratings.reduce(
-              (acc, curr) => acc + curr.rating,
-              0
-            );
-            return Number((total / this.ratings.length).toFixed(1));
-          },
+          ]
         },
       },
     ],
@@ -276,3 +309,11 @@ export const Regions: IRegion[] = [
     ],
   },
 ];
+
+// function () {
+//   const total = this.ratings.reduce(
+//     (acc, curr) => acc + curr.rating,
+//     0
+//   );
+//   return Number((total / this.ratings.length).toFixed(1));
+// },
