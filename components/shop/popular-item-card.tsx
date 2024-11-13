@@ -1,7 +1,6 @@
 import ISoldItem from "@/models/sold-item";
 import Image from "next/image";
 import Rating from "./rating";
-import { Regions } from "../../mock-data/regions";
 import { IStore } from "@/models/store";
 import DefaultAvatar from "./default-avatar";
 
