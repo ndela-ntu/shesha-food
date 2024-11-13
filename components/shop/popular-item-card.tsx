@@ -3,6 +3,7 @@ import Image from "next/image";
 import Rating from "./rating";
 import { IStore } from "@/models/store";
 import DefaultAvatar from "./default-avatar";
+import Divider from "../divider";
 
 export default function PopularItemCard({
   popularItemWithStore,
@@ -24,8 +25,8 @@ export default function PopularItemCard({
 
   return (
     <div className="flex flex-col items-center bg-coralPink rounded-md">
-      <div className="flex items-center justify-start w-full space-x-2.5 px-1">
-        <DefaultAvatar name={popularItemWithStore.store.name} size={15} className="h-5 w-5" />
+      <div className="flex items-center justify-start w-full space-x-2.5 p-1">
+        <DefaultAvatar name={popularItemWithStore.store.name} size={20} className="h-5 w-5" />
         <h1 className="font-medium">
           {popularItemWithStore.popularItem.name}
         </h1>
@@ -33,7 +34,7 @@ export default function PopularItemCard({
       <div className="aspect-square relative w-full h-full">
         <Image
           src={popularItemWithStore.popularItem.imageUrl}
-          alt="Example Image"
+          alt="Image of food"
           fill
           style={{ objectFit: "cover" }}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
