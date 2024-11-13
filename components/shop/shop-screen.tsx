@@ -15,6 +15,8 @@ import { IStore } from "@/models/store";
 import IRegion from "@/models/region";
 import { MapPin } from "lucide-react";
 import PopularItemsCarousel from "./popular-items-carousel";
+import ISoldItem from "@/models/sold-item";
+import { menuWithRatings } from "@/utils/menuWithRatings";
 
 export const getStoreLocationsNames = async (stores: IStore[]) => {
   const results: { id: number; locationName: string }[] = [];
@@ -45,6 +47,7 @@ export default function ShopScreen() {
   const { location } = useLocation();
   const [loading, setLoading] = useState<boolean>(false);
   const [locationName, setLocationName] = useState<string>("");
+  const [popularItemsWithStore, setPopularItemsWithStore] = useState<{popularItem: ISoldItem, store: IStore}[]>([]);
   const [storeLocationNames, setStoreLocationNames] = useState<
     {
       id: number;
@@ -90,11 +93,27 @@ export default function ShopScreen() {
 
   useEffect(() => {
     if (region) {
+      const topFourMenus = menuWithRatings(region.stores)
+        .sort((a, b) => b.avgRating - a.avgRating)
+        .slice(0, 4);
+
+    const popularItemsWithStore: {popularItem: ISoldItem, store: IStore}[] = [];
+      topFourMenus.forEach((menu) => {
+        const store = region.stores.find((item) => item.id === menu.storeId);
+        const popularItem = store?.menu.find(
+          (menuItem) => menuItem.id === menu.id
+        );
+
+        if (store && popularItem) {
+          popularItemsWithStore.push({popularItem, store});
+        }
+      });
+      setPopularItemsWithStore(popularItemsWithStore);
+
       const getLocationNames = async () => {
         try {
           const storeLocations = await getStoreLocationsNames(region.stores);
           setStoreLocationNames(storeLocations);
-          console.log(storeLocations);
         } catch (error) {
           console.error("Error fetching location names", error);
         }
@@ -105,7 +124,11 @@ export default function ShopScreen() {
   }, [region]);
 
   if (!region) {
-    return <div className="h-min-screen">This app is not supported in your region</div>;
+    return (
+      <div className="h-min-screen">
+        This app is not supported in your region
+      </div>
+    );
   }
 
   return (
@@ -123,7 +146,7 @@ export default function ShopScreen() {
           <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
             Popular foods around {region.name}
           </h1>
-          <PopularItemsCarousel popularItems={region.popularItems} />
+          <PopularItemsCarousel popularItemsWithStore={popularItemsWithStore} />
         </div>
         <div className="border border-champagne p-1.5">
           <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">

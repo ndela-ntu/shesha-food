@@ -1,5 +1,6 @@
 import { ITEMSCATEGORY } from "./items-category";
-import { IRatings } from "./rating";
+import IRating from "./rating";
+
 
 export default interface ISoldItem {
   id: number;
@@ -9,6 +10,6 @@ export default interface ISoldItem {
   description: string;
   imageUrl: string;
   ingredients: string[];
-  ratings?: IRatings;
+  ratings?: IRating[];
 }
 

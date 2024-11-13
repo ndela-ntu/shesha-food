@@ -14,7 +14,7 @@ const Rating = ({
           key={index}
           fill={index < rating ? "currentColor" : "none"}
           color={index < rating ? "#F6E7CB" : "#CCCCCC"}
-          className="w-4 h-4"
+          className="w-3 h-3"
         />
       ))}
     </div>

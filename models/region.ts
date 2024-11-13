@@ -9,5 +9,4 @@ export default interface IRegion {
   coordinates: ICoordinates;
   stores: IStore[]
   drivers: IDriver[];
-  popularItems: ISoldItem[];
 }

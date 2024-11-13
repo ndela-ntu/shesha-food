@@ -1,5 +1,5 @@
 import ICoordinates from "./coordinates";
-import { IRatings } from "./rating";
+import IRating from "./rating";
 import ISoldItems from "./sold-item";
 
 export interface IStore {
@@ -9,9 +9,7 @@ export interface IStore {
   description: string;
   tags: string[];
   location: ICoordinates;
-  menu: {
-    items: ISoldItems[];
-  };
+  menu: ISoldItems[];
   extras:
     | {
         name: string;
@@ -19,5 +17,5 @@ export interface IStore {
         imageUrl: string | undefined;
       }[]
     | undefined;
-  ratings: IRatings;
+  ratings: IRating[];
 }

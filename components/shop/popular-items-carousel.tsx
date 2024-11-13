@@ -2,11 +2,12 @@ import ISoldItem from "@/models/sold-item";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import PopularItemCard from "./popular-item-card";
+import { IStore } from "@/models/store";
 
 export default function PopularItemsCarousel({
-  popularItems,
+  popularItemsWithStore,
 }: {
-  popularItems: ISoldItem[];
+  popularItemsWithStore: {popularItem: ISoldItem, store: IStore}[];
 }) {
   return (
     <Carousel
@@ -17,12 +18,12 @@ export default function PopularItemsCarousel({
       ]}
     >
       <CarouselContent className="-ml-1">
-        {popularItems.map((popularItem) => (
+        {popularItemsWithStore.map((item) => (
           <CarouselItem
             className="pl-1 basis-1/2 md:basis-1/3 lg:basis-1/4"
-            key={popularItem.id}
+            key={item.popularItem.id}
           >
-            <PopularItemCard popularItem={popularItem} />
+            <PopularItemCard popularItemWithStore={item} />
           </CarouselItem>
         ))}
       </CarouselContent>
