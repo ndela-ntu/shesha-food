@@ -18,6 +18,7 @@ import PopularItemsCarousel from "./popular-items-carousel";
 import ISoldItem from "@/models/sold-item";
 import { menuWithRatings } from "@/utils/menuWithRatings";
 import { Button } from "../ui/button";
+import CarouselWithProgress from "./test-carousel";
 
 export const getStoreLocationsNames = async (stores: IStore[]) => {
   const results: { id: number; locationName: string }[] = [];
@@ -132,11 +133,11 @@ export default function ShopScreen() {
   if (!region) {
     return (
       <div className="h-screen w-full flex flex-col items-center space-y-2.5 pt-2.5">
-        <span>This app is not supported in your region.</span>
+        <span className="text-center">This app is not supported in your region. Please select a supported region.</span>
         <Link href="/">
           <div className="flex w-full rounded-xl justify-center items-center bg-coralPink max-w-min text-champagne">
             <ArrowLeft className="p-0" />
-            <Button className="pl-0">Go back</Button>
+            <Button className="pl-0">Pick location</Button>
           </div>
         </Link>
       </div>
@@ -161,6 +162,7 @@ export default function ShopScreen() {
             placeholder="Search for food..."
           />
         </div>
+        <CarouselWithProgress />
         <CategoryCarousel />
         <div className="border border-champagne p-1.5">
           <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
