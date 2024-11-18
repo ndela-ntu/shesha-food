@@ -2,9 +2,9 @@
 
 import { ChevronDown, LocateFixed, MoveRight, Pin } from "lucide-react";
 import Link from "next/link";
-import { SearchWithGeocoding } from "./search-with-geocoding";
-import { Button } from "./ui/button";
-import MapWrapper from "./map-wrapper";
+import { SearchWithGeocoding } from "../search-with-geocoding";
+import { Button } from "../ui/button";
+import MapWrapper from "../map-wrapper";
 import { useLocation } from "@/context/location-context";
 import { useEffect, useState } from "react";
 import {
@@ -14,28 +14,44 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTrigger,
-} from "./ui/sheet";
+} from "../ui/sheet";
+import ICoordinates from "@/models/coordinates";
 
 export default function LocationPickerSheet({
   currentLocation,
+  onLocationPickedCB,
 }: {
   currentLocation: string;
+  onLocationPickedCB: (location: ICoordinates) => void;
 }) {
   const { location, fetchLocation, setLocation, clearLocation } = useLocation();
   const [locationName, setLocationName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [locationState, setLocationState] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
 
   useEffect(() => {
     const reverseGeocode = async () => {
-      if (location) {
+      if (location || locationState) {
         setLoading(true);
         try {
-          const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${location?.latitude}&lon=${location?.longitude}`
-          );
+          let response = null;
+          if (locationState) {
+            response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${locationState?.latitude}&lon=${locationState?.longitude}`
+            );
+          } else if (location) {
+            response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${location?.latitude}&lon=${location?.longitude}`
+            );
+          }
 
-          const data = await response.json();
-          setLocationName(data.name);
+          if (response) {
+            const data = await response.json();
+            setLocationName(data.name);
+          }
         } catch (error) {
           console.error("Error fetching location data:", error);
         } finally {
@@ -45,7 +61,31 @@ export default function LocationPickerSheet({
     };
 
     reverseGeocode();
-  }, [location]);
+  }, [location, locationState]);
+
+  const handleOnContinueClick = () => {
+    if (locationName) {
+      if (locationState) {
+        onLocationPickedCB({
+          id: 0,
+          lat: locationState.latitude,
+          lng: locationState.longitude,
+          name: locationName,
+        });
+        setLocation({
+          latitude: locationState.latitude,
+          longitude: locationState.longitude,
+        });
+      } else if (location) {
+        onLocationPickedCB({
+          id: 0,
+          lat: location.latitude,
+          lng: location.longitude,
+          name: locationName,
+        });
+      }
+    }
+  };
 
   return (
     <Sheet>
@@ -63,7 +103,7 @@ export default function LocationPickerSheet({
               className="border border-champagne rounded-xl"
               placeholder="Search delivery location..."
               onSelectCoordinates={(coordinates) =>
-                setLocation({
+                setLocationState({
                   latitude: coordinates.lat,
                   longitude: coordinates.lon,
                 })
@@ -80,13 +120,16 @@ export default function LocationPickerSheet({
           </Button>
         </div>
         {location && (
-          <SheetFooter>
-            <div className="z-20 bg-coralPink w-full flex items-center justify-between ">
+          <SheetFooter className="z-0">
+            <div className="z-0 bg-coralPink w-full flex items-center justify-between">
               <span className="pl-2.5 text-champagne">
                 {loading ? "Loading..." : locationName}
               </span>
               <SheetClose asChild>
-                <div className="flex bg-champagne text-olivine py-2 px-1">
+                <div
+                  onClick={handleOnContinueClick}
+                  className="flex bg-champagne text-olivine py-2 px-1"
+                >
                   <span>Continue</span>
                   <MoveRight />
                 </div>

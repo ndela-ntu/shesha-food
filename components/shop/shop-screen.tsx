@@ -7,16 +7,17 @@ import Image from "next/image";
 import DefaultAvatar from "./default-avatar";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import LocationPickerSheet from "../location-picker-sheet";
+import LocationPickerSheet from "./location-picker-sheet";
 import CategoryCarousel from "./category-carousel";
 import { findNearbyRegion } from "@/utils/findNearByRegion";
 import reverseGeocode from "@/utils/reverseGeocode";
 import { IStore } from "@/models/store";
 import IRegion from "@/models/region";
-import { MapPin } from "lucide-react";
+import { ArrowLeft, MapPin } from "lucide-react";
 import PopularItemsCarousel from "./popular-items-carousel";
 import ISoldItem from "@/models/sold-item";
 import { menuWithRatings } from "@/utils/menuWithRatings";
+import { Button } from "../ui/button";
 
 export const getStoreLocationsNames = async (stores: IStore[]) => {
   const results: { id: number; locationName: string }[] = [];
@@ -44,10 +45,12 @@ export const getStoreLocationsNames = async (stores: IStore[]) => {
 };
 
 export default function ShopScreen() {
-  const { location } = useLocation();
+  const { location, setLocation } = useLocation();
   const [loading, setLoading] = useState<boolean>(false);
   const [locationName, setLocationName] = useState<string>("");
-  const [popularItemsWithStore, setPopularItemsWithStore] = useState<{popularItem: ISoldItem, store: IStore}[]>([]);
+  const [popularItemsWithStore, setPopularItemsWithStore] = useState<
+    { popularItem: ISoldItem; store: IStore }[]
+  >([]);
   const [storeLocationNames, setStoreLocationNames] = useState<
     {
       id: number;
@@ -68,6 +71,8 @@ export default function ShopScreen() {
 
     if (region) {
       setRegion(region);
+    } else {
+      setRegion(null);
     }
 
     const reverseGeocode = async () => {
@@ -97,7 +102,8 @@ export default function ShopScreen() {
         .sort((a, b) => b.avgRating - a.avgRating)
         .slice(0, 4);
 
-    const popularItemsWithStore: {popularItem: ISoldItem, store: IStore}[] = [];
+      const popularItemsWithStore: { popularItem: ISoldItem; store: IStore }[] =
+        [];
       topFourMenus.forEach((menu) => {
         const store = region.stores.find((item) => item.id === menu.storeId);
         const popularItem = store?.menu.find(
@@ -105,7 +111,7 @@ export default function ShopScreen() {
         );
 
         if (store && popularItem) {
-          popularItemsWithStore.push({popularItem, store});
+          popularItemsWithStore.push({ popularItem, store });
         }
       });
       setPopularItemsWithStore(popularItemsWithStore);
@@ -125,15 +131,29 @@ export default function ShopScreen() {
 
   if (!region) {
     return (
-      <div className="h-min-screen">
-        This app is not supported in your region
+      <div className="h-screen w-full flex flex-col items-center space-y-2.5 pt-2.5">
+        <span>This app is not supported in your region.</span>
+        <Link href="/">
+          <div className="flex w-full rounded-xl justify-center items-center bg-coralPink max-w-min text-champagne">
+            <ArrowLeft className="p-0" />
+            <Button className="pl-0">Go back</Button>
+          </div>
+        </Link>
       </div>
     );
   }
 
   return (
     <div className="w-full pb-5">
-      <LocationPickerSheet currentLocation={locationName} />
+      <LocationPickerSheet
+        onLocationPickedCB={(coordinates) => {
+          setLocation({
+            latitude: coordinates.lat,
+            longitude: coordinates.lng,
+          });
+        }}
+        currentLocation={locationName}
+      />
       <div className="text-champagne w-full min-h-screen px-1 flex flex-col space-y-4">
         <div className="w-full">
           <SearchInput
