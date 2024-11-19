@@ -13,7 +13,7 @@ import { findNearbyRegion } from "@/utils/findNearByRegion";
 import reverseGeocode from "@/utils/reverseGeocode";
 import { IStore } from "@/models/store";
 import IRegion from "@/models/region";
-import { ArrowLeft, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowRight, MapPin } from "lucide-react";
 import PopularItemsCarousel from "./popular-items-carousel";
 import ISoldItem from "@/models/sold-item";
 import { menuWithRatings } from "@/utils/menuWithRatings";
@@ -170,9 +170,12 @@ export default function ShopScreen() {
             Popular foods around {region.name}
           </h1>
           <PopularItemsCarousel popularItemsWithStore={popularItemsWithStore} />
-          <Button className="bg-coralPink text-champagne flex w-full items-end">
-            View All
-          </Button>
+          <div className="w-full flex items-center justify-end">
+            <Button className="bg-coralPink text-champagne rounded-xl mt-2.5 max-w-fit">
+              <span>View All</span>
+              <ArrowRight />
+            </Button>
+          </div>
         </div>
 
         <div className="border border-champagne p-1.5">
@@ -229,9 +232,12 @@ export default function ShopScreen() {
               );
             })}
           </div>
-          <Button className="bg-coralPink text-champagne flex w-full items-end">
-            View All
-          </Button>
+          <div className="w-full flex items-center justify-end">
+            <Button className="bg-coralPink text-champagne rounded-xl mt-2.5 max-w-fit">
+              <span>View All</span>
+              <ArrowRight />
+            </Button>
+          </div>
         </div>
         <div className="border border-champagne p-1.5">
           <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
