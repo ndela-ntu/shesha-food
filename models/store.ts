@@ -6,6 +6,7 @@ export interface IStore {
   id: number;
   name: string;
   logoUrl: string | undefined;
+  defaultLogo: { gradient: { from: string; to: string } };
   description: string;
   tags: string[];
   location: ICoordinates;

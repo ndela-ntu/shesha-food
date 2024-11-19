@@ -4,9 +4,10 @@ interface DefaultAvatarProps {
   name: string
   size?: number
   className?: string
+  defaultColors: {from: string; to: string};
 }
 
-export default function DefaultAvatar({ name, size = 40, className = '' }: DefaultAvatarProps) {
+export default function DefaultAvatar({ name, size = 40, className = '', defaultColors }: DefaultAvatarProps) {
   const firstLetter = name.charAt(0).toUpperCase()
 
   // Generate a random gradient
@@ -20,8 +21,10 @@ export default function DefaultAvatar({ name, size = 40, className = '' }: Defau
   }
 
   const gradientStyle = {
-    background: `linear-gradient(135deg, ${getRandomColor()}, ${getRandomColor()})`,
-  }
+    background: `linear-gradient(135deg, ${
+      defaultColors?.from != null ? defaultColors!.from : getRandomColor()
+    }, ${defaultColors?.to != null ? defaultColors!.to : getRandomColor()})`,
+  };
 
   return (
     <div

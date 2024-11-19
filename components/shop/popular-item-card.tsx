@@ -26,10 +26,22 @@ export default function PopularItemCard({
   return (
     <div className="flex flex-col items-center bg-coralPink rounded-md">
       <div className="flex items-center justify-start w-full space-x-2.5 p-1">
-        <DefaultAvatar name={popularItemWithStore.store.name} size={20} className="h-5 w-5" />
-        <h1 className="font-medium">
-          {popularItemWithStore.popularItem.name}
-        </h1>
+        {popularItemWithStore.store.logoUrl ? (
+          <Image
+            src={popularItemWithStore.store.logoUrl}
+            alt="Logo of store"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+          />
+        ) : (
+          <DefaultAvatar
+            defaultColors={popularItemWithStore.store.defaultLogo.gradient}
+            name={popularItemWithStore.store.name}
+            size={25}
+          />
+        )}
+        <h1 className="font-medium">{popularItemWithStore.popularItem.name}</h1>
       </div>
       <div className="aspect-square relative w-full h-full">
         <Image
