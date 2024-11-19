@@ -1,6 +1,7 @@
 export enum CoordReferenceType {
   REGION,
   STORE,
+  DRIVER
 }
 
 type CoordReference = {

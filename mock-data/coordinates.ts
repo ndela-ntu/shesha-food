@@ -36,4 +36,25 @@ export const Coordinates: ICoordinates[] = [
     lng: 27.920145,
     ref: { ref: 3, type: CoordReferenceType.STORE },
   },
+  {
+    id: 6,
+    lat: 0,
+    lng: 0,
+    name: "B04 Park",
+    ref: { ref: 1, type: CoordReferenceType.DRIVER },
+  },
+  {
+    id: 7,
+    name: "X545 Location",
+    lat: -26.293151,
+    lng: 27.934056,
+    ref: { ref: 2, type: CoordReferenceType.DRIVER },
+  },
+  {
+    id: 8,
+    name: "Y276 Location",
+    lat: -26.293151,
+    lng: 27.934056,
+    ref: {ref: 3, type: CoordReferenceType.DRIVER}
+  },
 ];

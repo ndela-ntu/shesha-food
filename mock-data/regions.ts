@@ -22,7 +22,7 @@ export const Regions: IRegion[] = [
     drivers: [
       {
         id: 1,
-        position: { id: 1, lat: 0, lng: 0, name: "Freedom Park" },
+        position: Coordinates.find((coord) => coord.ref.ref === 1 && CoordReferenceType.DRIVER)!,
         owner: { name: "Lindelani" },
       },
     ],
@@ -37,23 +37,13 @@ export const Regions: IRegion[] = [
     stores: Stores.filter((store) => store.regionRef === 2),
     drivers: [
       {
-        id: 1,
-        position: {
-          id: 1,
-          name: "X545 Location",
-          lat: -26.293151,
-          lng: 27.934056,
-        },
+        id: 2,
+        position: Coordinates.find((coord) => coord.ref.ref === 2 && CoordReferenceType.DRIVER)!,
         owner: { name: "Lindelani" },
       },
       {
-        id: 1,
-        position: {
-          id: 1,
-          name: "Y276 Location",
-          lat: -26.293151,
-          lng: 27.934056,
-        },
+        id: 3,
+        position: Coordinates.find((coord) => coord.ref.ref === 3 && CoordReferenceType.DRIVER)!,
         owner: { name: "Lindelani" },
       },
     ],
