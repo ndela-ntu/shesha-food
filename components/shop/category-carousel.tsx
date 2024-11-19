@@ -6,32 +6,42 @@ import {
   CarouselItem,
 } from "../ui/carousel";
 import { useCallback, useEffect, useState } from "react";
+import React from "react";
 
 export default function CategoryCarousel() {
-  const [progress, setProgress] = useState(0);
-  const [api, setApi] = useState<CarouselApi>();
+  const [api, setApi] = React.useState<CarouselApi>();
+  const [current, setCurrent] = React.useState(0);
+  const [count, setCount] = React.useState(0);
 
   const categories = Object.values(ITEMSCATEGORY).filter(
     (category) => typeof category === "string"
   );
 
-  const onInit = useCallback(() => {
-    setProgress(0);
+  const onInit = React.useCallback(() => {
+    setCount(0);
+    setCurrent(0);
   }, []);
 
-  const onScroll = useCallback(() => {
+  const onScroll = React.useCallback(() => {
     if (!api) return;
-    const progress = Math.max(0, Math.min(1, api.scrollProgress())) * 100;
-    setProgress(progress);
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap());
   }, [api]);
 
-  useEffect(() => {
-    if (!api) return;
+  React.useEffect(() => {
+    if (!api) {
+      return;
+    }
 
-    onScroll(); // Call once to set initial progress
+    onScroll();
     api.on("init", onInit);
     api.on("scroll", onScroll);
     api.on("reInit", onScroll);
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
 
     return () => {
       api.off("init", onInit);
@@ -56,12 +66,16 @@ export default function CategoryCarousel() {
           ))}
         </CarouselContent>
       </Carousel>
-      <div className="mt-1 flex items-center justify-center">
-        <progress
-          className="progress h-1.5 w-[80%] bg-champagne"
-          value={progress}
-          max="100"
-        ></progress>
+      <div className="mt-1 flex items-center justify-center space-x-2.5">
+        {Array.from({ length: count }).map((_, index) => (
+          <button
+            key={index}
+            className={`h-2 w-2 rounded-full transition-all ${
+              index === current ? "bg-asparagus w-4" : "bg-champagne"
+            }`}
+            onClick={() => api?.scrollTo(index)}
+          />
+        ))}
       </div>
     </>
   );

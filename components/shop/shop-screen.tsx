@@ -176,43 +176,54 @@ export default function ShopScreen() {
             Popular stores around {region.name}
           </h1>
           <div className="flex flex-col space-y-2.5">
-            {region.stores.map((store, index) => (
-              <div key={store.id} className="bg-coralPink rounded-xl p-1">
-                <div className="flex space-x-2.5 items-center">
-                  <div className="relative">
-                    <Link href={`shop/${store.id}`}>
-                      {store.logoUrl ? (
-                        <Image
-                          src={store.logoUrl}
-                          alt="Logo of store"
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="object-cover"
-                        />
-                      ) : (
-                        <DefaultAvatar
-                          defaultColors={store.defaultLogo.gradient}
-                          name={store.name}
-                          size={25}
-                        />
-                      )}
-                    </Link>
-                  </div>
-                  <div className="flex flex-col space-y-1">
-                    <span className="font-semibold">{store.name}</span>
-                    <span className="text-xs md:text-sm">
-                      {store.description}
-                    </span>
-                    {storeLocationNames[index] && (
-                      <span className="flex items-center justify-center bg-champagne text-olivine rounded-xl px-2.5 p-1 text-xs md:text-sm max-w-fit space-x-1">
-                        <MapPin className="h-4 w-4" />
-                        <span>{storeLocationNames[index].locationName}</span>
+            {region.stores.map((store, index) => {
+              const total = store.ratings.reduce(
+                (acc, curr) => acc + curr.rating,
+                0
+              );
+              const average = Number((total / store.ratings.length).toFixed(1));
+
+              return (
+                <div key={store.id} className="bg-coralPink rounded-xl p-1">
+                  <div className="flex space-x-2.5 items-center justify-between">
+                    <div className="relative">
+                      <Link href={`shop/${store.id}`}>
+                        {store.logoUrl ? (
+                          <Image
+                            src={store.logoUrl}
+                            alt="Logo of store"
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className="object-cover"
+                          />
+                        ) : (
+                          <DefaultAvatar
+                            defaultColors={store.defaultLogo.gradient}
+                            name={store.name}
+                            size={25}
+                          />
+                        )}
+                      </Link>
+                    </div>
+                    <div className="flex flex-col space-y-1">
+                      <span className="font-semibold">{store.name}</span>
+                      <span className="text-xs md:text-sm">
+                        {store.description}
                       </span>
-                    )}
+                      {storeLocationNames[index] && (
+                        <span className="flex items-center justify-center bg-champagne text-olivine rounded-xl px-2.5 p-1 text-xs md:text-sm max-w-fit space-x-1">
+                          <MapPin className="h-4 w-4" />
+                          <span>{storeLocationNames[index].locationName}</span>
+                        </span>
+                      )}
+                    </div>
+                    <span className="flex items-center justify-center rounded-full w-6 h-6 bg-champagne text-asparagus text-sm">
+                      {average}
+                    </span>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
