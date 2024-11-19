@@ -170,19 +170,11 @@ export default function ShopScreen() {
             Popular foods around {region.name}
           </h1>
           <PopularItemsCarousel popularItemsWithStore={popularItemsWithStore} />
+          <Button className="bg-coralPink text-champagne flex w-full items-end">
+            View All
+          </Button>
         </div>
-        <div className="border border-champagne p-1.5">
-          <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
-            Kasi Flavour
-          </h1>
-          <PopularItemsCarousel popularItemsWithStore={popularItemsWithStore} />
-        </div>
-        <div className="border border-champagne p-1.5">
-          <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
-            Bakery
-          </h1>
-          <PopularItemsCarousel popularItemsWithStore={popularItemsWithStore} />
-        </div>
+
         <div className="border border-champagne p-1.5">
           <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
             Popular stores around {region.name}
@@ -237,6 +229,21 @@ export default function ShopScreen() {
               );
             })}
           </div>
+          <Button className="bg-coralPink text-champagne flex w-full items-end">
+            View All
+          </Button>
+        </div>
+        <div className="border border-champagne p-1.5">
+          <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
+            Kasi Flavour
+          </h1>
+          <PopularItemsCarousel popularItemsWithStore={popularItemsWithStore} />
+        </div>
+        <div className="border border-champagne p-1.5">
+          <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
+            Bakery
+          </h1>
+          <PopularItemsCarousel popularItemsWithStore={popularItemsWithStore} />
         </div>
       </div>
     </div>

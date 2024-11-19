@@ -1,4 +1,4 @@
-import ICoordinates from "./coordinates";
+import { ICoordinates } from "./coordinates";
 
 export default interface IDriver {
   id: number;
