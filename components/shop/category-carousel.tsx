@@ -15,7 +15,7 @@ export default function CategoryCarousel() {
 
   const categories = Object.values(ITEMSCATEGORY).filter(
     (category) => typeof category === "string"
-  );
+  ).map((category) => category.toString().split("_").join(" "));
 
   const onInit = React.useCallback(() => {
     setCount(0);
@@ -53,13 +53,13 @@ export default function CategoryCarousel() {
   return (
     <>
       <Carousel setApi={setApi} opts={{ align: "center" }} className="w-full">
-        <CarouselContent className="-ml-1">
+        <CarouselContent className="-ml-1 ">
           {categories.map((category, i) => (
             <CarouselItem
               key={i}
-              className="pl-1 basis-1/4 md:basis-1/5 lg:basis-1/6"
+              className="pl-1 basis-1/3 md:basis-1/4 lg:basis-1/5"
             >
-              <div className="flex items-center justify-center py-2.5 rounded-xl m-0 bg-champagne">
+              <div className="flex items-center justify-center py-2 rounded-xl m-0 bg-champagne">
                 <span className="text-olivine text-xs">{category}</span>
               </div>
             </CarouselItem>

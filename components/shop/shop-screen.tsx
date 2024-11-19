@@ -173,6 +173,18 @@ export default function ShopScreen() {
         </div>
         <div className="border border-champagne p-1.5">
           <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
+            Kasi Flavour
+          </h1>
+          <PopularItemsCarousel popularItemsWithStore={popularItemsWithStore} />
+        </div>
+        <div className="border border-champagne p-1.5">
+          <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
+            Bakery
+          </h1>
+          <PopularItemsCarousel popularItemsWithStore={popularItemsWithStore} />
+        </div>
+        <div className="border border-champagne p-1.5">
+          <h1 className="text-sm mb-2 bg-celadon rounded-xl p-1.5 max-w-fit">
             Popular stores around {region.name}
           </h1>
           <div className="flex flex-col space-y-2.5">
