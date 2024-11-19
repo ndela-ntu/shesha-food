@@ -98,13 +98,13 @@ export default function ShopScreen() {
 
   useEffect(() => {
     if (region) {
-      const topFourMenus = menuWithRatings(region.stores)
+      const topFiveMenus = menuWithRatings(region.stores)
         .sort((a, b) => b.avgRating - a.avgRating)
-        .slice(0, 4);
+        .slice(0, 5);
 
       const popularItemsWithStore: { popularItem: ISoldItem; store: IStore }[] =
         [];
-      topFourMenus.forEach((menu) => {
+      topFiveMenus.forEach((menu) => {
         const store = region.stores.find((item) => item.id === menu.storeId);
         const popularItem = store?.menu.find(
           (menuItem) => menuItem.id === menu.id

@@ -4,6 +4,7 @@ import IRating from "./rating";
 
 export default interface ISoldItem {
   id: number;
+  storeRef: number;
   name: string;
   category: ITEMSCATEGORY;
   price: number;

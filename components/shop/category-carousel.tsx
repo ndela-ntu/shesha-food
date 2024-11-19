@@ -71,7 +71,7 @@ export default function CategoryCarousel() {
           <button
             key={index}
             className={`h-2 w-2 rounded-full transition-all ${
-              index === current ? "bg-asparagus w-4" : "bg-champagne"
+              index === current ? "bg-coralPink w-4" : "bg-champagne"
             }`}
             onClick={() => api?.scrollTo(index)}
           />

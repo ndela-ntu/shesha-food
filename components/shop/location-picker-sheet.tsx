@@ -15,7 +15,9 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "../ui/sheet";
-import ICoordinates from "@/models/coordinates";
+import { CoordReferenceType, ICoordinates } from "@/models/coordinates";
+import { Regions } from "@/mock-data/regions";
+import { findNearbyRegion } from "@/utils/findNearByRegion";
 
 export default function LocationPickerSheet({
   currentLocation,
@@ -66,22 +68,36 @@ export default function LocationPickerSheet({
   const handleOnContinueClick = () => {
     if (locationName) {
       if (locationState) {
+        const region = findNearbyRegion(
+          {
+            lat: locationState?.latitude || 0,
+            lng: locationState?.longitude || 0,
+          },
+          Regions
+        );
+
         onLocationPickedCB({
           id: 0,
           lat: locationState.latitude,
           lng: locationState.longitude,
           name: locationName,
+          ref: { ref: region?.id || 0, type: CoordReferenceType.REGION },
         });
         setLocation({
           latitude: locationState.latitude,
           longitude: locationState.longitude,
         });
       } else if (location) {
+        const region = findNearbyRegion(
+          { lat: location?.latitude || 0, lng: location?.longitude || 0 },
+          Regions
+        );
         onLocationPickedCB({
           id: 0,
           lat: location.latitude,
           lng: location.longitude,
           name: locationName,
+          ref: { ref: region?.id || 0, type: CoordReferenceType.REGION },
         });
       }
     }
